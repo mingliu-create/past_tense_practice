@@ -38,6 +38,18 @@ const QUESTION_BANK = {
     { type: "input", s: "When the teacher ______ (arrive), the students ______ (wait) for 10 minutes.", a: ["arrived", "had been waiting"] },
     { type: "input", s: "I ______ (see) that he ______ (be) crying.", a: ["saw", "had been"] },
     { type: "input", s: "By the time the firemen ______ (arrive), the house ______ (burn) for hours.", a: ["arrived", "had been burning"] }
+  ],
+  tags: [
+    { type: "input", s: "You aren't coming to the party, ______ (tag)?", a: ["are you"] },
+    { type: "input", s: "She likes music, ______ (tag)?", a: ["doesn't she"] },
+    { type: "input", s: "They ______ (be) at home, weren't they?", a: ["were"] },
+    { type: "input", s: "He ______ (go) to the store yesterday, didn't he?", a: ["went"] },
+    { type: "input", s: "We have finished our work, ______ (tag)?", a: ["haven't we"] },
+    { type: "input", s: "It won't rain tomorrow, ______ (tag)?", a: ["will it"] },
+    { type: "choice", s: "You haven't seen my keys, ______?", choices: ["have you", "haven't you", "do you", "don't you"], a: ["have you"] },
+    { type: "input", s: "Let's go for a walk, ______ (tag)?", a: ["shall we"] },
+    { type: "input", s: "I am late, ______ (tag)?", a: ["aren't I"] },
+    { type: "input", s: "She had never been there before, ______ (tag)?", a: ["had she"] }
   ]
 };
 
@@ -86,7 +98,8 @@ function generateQuestions() {
     const p = QUESTION_BANK.perfect.map(q => ({ ...q, category: "Past Perfect Simple" }));
     const c = QUESTION_BANK.continuous.map(q => ({ ...q, category: "Past Perfect Continuous" }));
     const m = QUESTION_BANK.mixed.map(q => ({ ...q, category: "Mixed Past Tense" }));
-    pool = [...s, ...p, ...c, ...m];
+    const t = QUESTION_BANK.tags.map(q => ({ ...q, category: "Question Tags" }));
+    pool = [...s, ...p, ...c, ...m, ...t];
   } else if (state.currentTense === "perfects") {
     // Mix only Perfect and Perfect Continuous
     const p = QUESTION_BANK.perfect.map(q => ({ ...q, category: "Past Perfect Simple" }));
@@ -95,7 +108,8 @@ function generateQuestions() {
   } else {
     const cat = state.currentTense === "simple" ? "Past Simple" : 
                 state.currentTense === "perfect" ? "Past Perfect Simple" : 
-                "Past Perfect Continuous";
+                state.currentTense === "continuous" ? "Past Perfect Continuous" : 
+                "Question Tags";
     pool = QUESTION_BANK[state.currentTense].map(q => ({ ...q, category: cat }));
   }
 
@@ -120,6 +134,11 @@ function updateUI() {
     UI.category.innerText = q.category;
     UI.category.classList.remove("challenge");
   }
+
+  // Label Fix for stats
+  let tenseLabel = state.currentTense;
+  if (tenseLabel === "tags") tenseLabel = "Question Tags";
+  UI.currentTense.innerText = tenseLabel.charAt(0).toUpperCase() + tenseLabel.slice(1);
 
   // 2. Question Text & Dynamic Inputs
   let questionHTML = q.s;
