@@ -4,64 +4,43 @@
 
 const QUESTION_BANK = {
   simple: [
-    { s: "He ______ (buy) a new car last week.", v: "buy", a: "bought" },
-    { s: "They ______ (visit) Paris in 2019.", v: "visit", a: "visited" },
-    { s: "I ______ (see) that movie yesterday.", v: "see", a: "saw" },
-    { s: "She ______ (not / go) to the party on Friday.", v: "not go", a: "did not go" },
-    { s: "We ______ (eat) dinner at 8 PM.", v: "eat", a: "ate" },
-    { s: "Did you ______ (finish) your homework?", v: "finish", a: "finish" },
-    { s: "It ______ (rain) heavily last night.", v: "rain", a: "rained" },
-    { s: "My parents ______ (meet) in college.", v: "meet", a: "met" },
-    { s: "Who ______ (invent) the telephone?", v: "invent", a: "invented" },
-    { s: "The sun ______ (shine) brightly all day.", v: "shine", a: "shone" },
-    { s: "I ______ (forget) my keys at home.", v: "forget", a: "forgot" },
-    { s: "They ______ (win) the championship game.", v: "win", a: "won" },
-    { s: "He ______ (speak) to the teacher after class.", v: "speak", a: "spoke" },
-    { s: "We ______ (dance) all night long.", v: "dance", a: "danced" },
-    { s: "The plane ______ (land) safely on time.", v: "land", a: "landed" },
-    { s: "I ______ (write) a letter to my grandmother.", v: "write", a: "wrote" },
-    { s: "She ______ (tell) me a secret.", v: "tell", a: "told" },
-    { s: "They ______ (build) this house in 1950.", v: "build", a: "built" },
-    { s: "We ______ (drink) some tea after dinner.", v: "drink", a: "drank" },
-    { s: "He ______ (run) five miles this morning.", v: "run", a: "ran" }
+    { type: "input", s: "He ______ (buy) a new car last week.", a: ["bought"] },
+    { type: "input", s: "They ______ (visit) Paris in 2019.", a: ["visited"] },
+    { type: "choice", s: "I ______ that movie yesterday.", choices: ["see", "saw", "had seen", "was seeing"], a: ["saw"] },
+    { type: "input", s: "She ______ (not / go) to the party on Friday.", a: ["did not go"] },
+    { type: "input", s: "We ______ (eat) dinner at 8 PM.", a: ["ate"] },
+    { type: "choice", s: "Did you ______ your homework?", choices: ["finish", "finished", "had finished", "finishing"], a: ["finish"] },
+    { type: "input", s: "It ______ (rain) heavily last night.", a: ["rained"] },
+    { type: "input", s: "My parents ______ (meet) in college.", a: ["met"] },
+    { type: "choice", s: "The sun ______ brightly all day.", choices: ["shine", "shone", "shined", "shining"], a: ["shone"] },
+    { type: "input", s: "I ______ (forget) my keys at home.", a: ["forgot"] }
   ],
   perfect: [
-    { s: "She ______ (finish) her work before I arrived.", v: "finish", a: "had finished" },
-    { s: "By the time we got there, the movie ______ (start).", v: "start", a: "had started" },
-    { s: "I recognized him because I ______ (see) him before.", v: "see", a: "had seen" },
-    { s: "They ______ (never / be) to London until last year.", v: "never be", a: "had never been" },
-    { s: "The bus ______ (already / leave) when we reached the station.", v: "already leave", a: "had already left" },
-    { s: "He was tired because he ______ (work) all day.", v: "work", a: "had worked" },
-    { s: "The house was quiet because everyone ______ (go) to bed.", v: "go", a: "had gone" },
-    { s: "She realized she ______ (lose) her wallet.", v: "lose", a: "had lost" },
-    { s: "We ______ (not / eat) anything all day, so we were hungry.", v: "not eat", a: "had not eaten" },
-    { s: "The crops died because it ______ (not / rain) for months.", v: "not rain", a: "had not rained" },
-    { s: "Had you ______ (ever / hear) that song before tonight?", v: "ever hear", a: "ever heard" },
-    { s: "They ______ (finish) the marathon before sunset.", v: "finish", a: "had finished" },
-    { s: "I ______ (save) enough money for the trip.", v: "save", a: "had saved" },
-    { s: "We ______ (live) there for ten years when they moved.", v: "live", a: "had lived" },
-    { s: "He ______ (just / arrive) when the meeting started.", v: "just arrive", a: "had just arrived" },
-    { s: "She ______ (study) French before she moved to Paris.", v: "study", a: "had studied" },
-    { s: "They ______ (already / sell) the house by then.", v: "already sell", a: "had already sold" }
+    { type: "input", s: "She ______ (finish) her work before I arrived.", a: ["had finished"] },
+    { type: "choice", s: "By the time we got there, the movie ______.", choices: ["starts", "started", "had started", "has started"], a: ["had started"] },
+    { type: "input", s: "I recognized him because I ______ (see) him before.", a: ["had seen"] },
+    { type: "input", s: "They ______ (never / be) to London until last year.", a: ["had never been"] },
+    { type: "choice", s: "The bus ______ when we reached the station.", choices: ["already left", "had already left", "has already left", "already leaves"], a: ["had already left"] },
+    { type: "input", s: "He was tired because he ______ (work) all day.", a: ["had worked"] },
+    { type: "input", s: "The house was quiet because everyone ______ (go) to bed.", a: ["had gone"] }
   ],
   continuous: [
-    { s: "He ______ (wait) for an hour when the bus finally came.", v: "wait", a: "had been waiting" },
-    { s: "The children ______ (play) outside all afternoon before it rained.", v: "play", a: "had been playing" },
-    { s: "She ______ (study) for years before she got her degree.", v: "study", a: "had been studying" },
-    { s: "How long ______ you ______ (look) for a job before you found one?", v: "look", a: "had you been looking" },
-    { s: "They ______ (travel) for months before they ran out of money.", v: "travel", a: "had been traveling" },
-    { s: "I ______ (work) at that company for 5 years when it closed.", v: "work", a: "had been working" },
-    { s: "The phone ______ (ring) for several minutes before I answered it.", v: "ring", a: "had been ringing" },
-    { s: "We ______ (drive) for two hours when we realized we were lost.", v: "drive", a: "had been driving" },
-    { s: "The athletes ______ (train) hard since January.", v: "train", a: "had been training" },
-    { s: "She was out of breath because she ______ (run).", v: "run", a: "had been running" },
-    { s: "The fire ______ (burn) for hours before the firefighters arrived.", v: "burn", a: "had been burning" },
-    { s: "He ______ (learn) Japanese for three years.", v: "learn", a: "had been learning" },
-    { s: "I ______ (wait) for the news all morning.", v: "wait", a: "had been waiting" },
-    { s: "They ______ (work) in the garden before it started to snow.", v: "work", a: "had been working" },
-    { s: "She ______ (cry) because she lost her toy.", v: "cry", a: "had been crying" }
+    { type: "input", s: "He ______ (wait) for an hour when the bus finally came.", a: ["had been waiting"] },
+    { type: "input", s: "The children ______ (play) outside all afternoon before it rained.", a: ["had been playing"] },
+    { type: "choice", s: "She ______ for years before she got her degree.", choices: ["studied", "had been studying", "has studied", "was studying"], a: ["had been studying"] },
+    { type: "input", s: "They ______ (travel) for months before they ran out of money.", a: ["had been traveling"] },
+    { type: "choice", s: "The phone ______ for several minutes before I answered it.", choices: ["rang", "had been ringing", "was ringing", "had rung"], a: ["had been ringing"] }
+  ],
+  mixed: [
+    { type: "input", s: "After she ______ (finish) her homework, she ______ (go) to sleep.", a: ["had finished", "went"] },
+    { type: "input", s: "They ______ (live) in Kyoto for 5 years before they ______ (move) to Tokyo.", a: ["had lived", "moved"] },
+    { type: "input", s: "The man ______ (realize) that he ______ (lose) his wallet.", a: ["realized", "had lost"] },
+    { type: "input", s: "When the teacher ______ (arrive), the students ______ (wait) for 10 minutes.", a: ["arrived", "had been waiting"] },
+    { type: "input", s: "I ______ (see) that he ______ (be) crying.", a: ["saw", "had been"] },
+    { type: "input", s: "By the time the firemen ______ (arrive), the house ______ (burn) for hours.", a: ["arrived", "had been burning"] }
   ]
 };
+
 
 const UI = {
   app: document.getElementById("app"),
@@ -106,7 +85,8 @@ function generateQuestions() {
     const s = QUESTION_BANK.simple.map(q => ({ ...q, category: "Past Simple" }));
     const p = QUESTION_BANK.perfect.map(q => ({ ...q, category: "Past Perfect Simple" }));
     const c = QUESTION_BANK.continuous.map(q => ({ ...q, category: "Past Perfect Continuous" }));
-    pool = [...s, ...p, ...c];
+    const m = QUESTION_BANK.mixed.map(q => ({ ...q, category: "Mixed Past Tense" }));
+    pool = [...s, ...p, ...c, ...m];
   } else {
     const cat = state.currentTense === "simple" ? "Past Simple" : 
                 state.currentTense === "perfect" ? "Past Perfect Simple" : 
@@ -127,12 +107,50 @@ function updateUI() {
   const q = state.currentQuestions[state.currentIndex];
   if (!q) return;
 
-  // Question Text
-  UI.text.innerHTML = q.s.replace("______", `<span class="blank">______</span>`);
-  UI.category.innerText = q.category;
-  UI.index.innerText = `Question ${state.currentIndex + 1}/10`;
+  // 1. Hint removal
+  if (state.currentTense === "mixed") {
+    UI.category.innerText = "Challenge Mode";
+    UI.category.classList.add("challenge");
+  } else {
+    UI.category.innerText = q.category;
+    UI.category.classList.remove("challenge");
+  }
+
+  // 2. Question Text & Dynamic Inputs
+  let questionHTML = q.s;
+  let blankCount = 0;
   
-  // Progress
+  if (q.type === "input") {
+    questionHTML = q.s.replace(/______/g, () => {
+      blankCount++;
+      return `<input type="text" class="inline-input" data-index="${blankCount - 1}" placeholder="..." autocomplete="off">`;
+    });
+    UI.text.innerHTML = questionHTML;
+    UI.input.classList.add("hidden");
+    UI.submitBtn.classList.remove("hidden");
+    
+    const firstInput = UI.text.querySelector('input');
+    if (firstInput) firstInput.focus();
+  } else if (q.type === "choice") {
+    UI.text.innerHTML = q.s.replace("______", `<span class="blank">______</span>`);
+    
+    // Create choice buttons
+    const choiceContainer = document.createElement("div");
+    choiceContainer.className = "choice-grid";
+    q.choices.forEach(choice => {
+      const btn = document.createElement("button");
+      btn.className = "choice-btn";
+      btn.innerText = choice;
+      btn.onclick = () => checkChoice(choice);
+      choiceContainer.appendChild(btn);
+    });
+    UI.text.appendChild(choiceContainer);
+    
+    UI.input.classList.add("hidden");
+    UI.submitBtn.classList.add("hidden");
+  }
+  
+  UI.index.innerText = `Question ${state.currentIndex + 1}/10`;
   UI.progressBar.style.width = `${((state.currentIndex + 1) / 10) * 100}%`;
   
   // Stats
@@ -141,37 +159,60 @@ function updateUI() {
   UI.accuracy.innerText = `${acc}%`;
   UI.currentTense.innerText = state.currentTense.charAt(0).toUpperCase() + state.currentTense.slice(1);
 
-  // Input
-  UI.input.value = "";
-  UI.input.focus();
-  
   // Feedback & Buttons
   UI.feedback.classList.add("hidden");
   UI.nextBtn.classList.add("hidden");
-  UI.submitBtn.classList.remove("hidden");
-  UI.input.disabled = false;
+}
+
+function checkChoice(choice) {
+  const q = state.currentQuestions[state.currentIndex];
+  const isCorrect = choice.toLowerCase() === q.a[0].toLowerCase();
+  finishQuestion(isCorrect, q.a.join(", "));
 }
 
 function checkAnswer() {
-  const userAns = UI.input.value.trim().toLowerCase();
-  const correctAns = state.currentQuestions[state.currentIndex].a.toLowerCase();
+  const q = state.currentQuestions[state.currentIndex];
+  if (q.type !== "input") return;
+
+  const inputs = UI.text.querySelectorAll(".inline-input");
+  let allCorrect = true;
+  let userAnswers = [];
   
+  inputs.forEach((input, i) => {
+    const val = input.value.trim().toLowerCase();
+    userAnswers.push(val);
+    if (val !== q.a[i].toLowerCase()) {
+      allCorrect = false;
+      input.classList.add("error");
+    } else {
+      input.classList.add("success");
+    }
+  });
+
+  finishQuestion(allCorrect, q.a.join(" / "));
+}
+
+function finishQuestion(isCorrect, correctStr) {
   state.totalAnswered++;
   
   UI.feedback.classList.remove("hidden");
-  UI.input.disabled = true;
   UI.submitBtn.classList.add("hidden");
   UI.nextBtn.classList.remove("hidden");
+  
+  // Disable all inputs/buttons
+  const inputs = UI.text.querySelectorAll(".inline-input");
+  inputs.forEach(i => i.disabled = true);
+  const choiceBtns = UI.text.querySelectorAll(".choice-btn");
+  choiceBtns.forEach(b => b.disabled = true);
 
-  if (userAns === correctAns) {
+  if (isCorrect) {
     state.score += 10;
     state.correctCount++;
     UI.feedback.className = "feedback correct";
     UI.feedback.innerText = "✨ Correct! Well done.";
-    UI.quizCard.classList.remove("shake");
   } else {
     UI.feedback.className = "feedback incorrect";
-    UI.feedback.innerText = `❌ Incorrect. The correct answer is: ${state.currentQuestions[state.currentIndex].a}`;
+    UI.feedback.innerText = `❌ Incorrect. Correct: ${correctStr}`;
     UI.quizCard.classList.add("shake");
     setTimeout(() => UI.quizCard.classList.remove("shake"), 400);
   }
