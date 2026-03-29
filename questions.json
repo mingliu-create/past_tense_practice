@@ -14,7 +14,17 @@
     { "type": "input", "s": "We ______ (arrive) at the airport at noon.", "a": ["arrived"] },
     { "type": "choice", "s": "Yesterday, I ______ to the gym.", "choices": ["go", "gone", "went", "was going"], "a": ["went"] },
     { "type": "input", "s": "They ______ (not / like) the food.", "a": ["did not like"] },
-    { "type": "input", "s": "Somebody ______ (steal) my bicycle.", "a": ["stole"] }
+    { "type": "input", "s": "Somebody ______ (steal) my bicycle.", "a": ["stole"] },
+    { "type": "input", "s": "I ______ (find) a 20 dollar bill on the street.", "a": ["found"] },
+    { "type": "input", "s": "She ______ (teach) English in Japan for three years.", "a": ["taught"] },
+    { "type": "choice", "s": "Who ______ the light bulb?", "choices": ["invent", "invented", "invents", "was inventing"], "a": ["invented"] },
+    { "type": "input", "s": "We ______ (celebrate) my birthday at a restaurant.", "a": ["celebrated"] },
+    { "type": "input", "s": "The baby ______ (sleep) through the whole night.", "a": ["slept"] },
+    { "type": "input", "s": "He ______ (break) his leg while skiing.", "a": ["broke"] },
+    { "type": "choice", "s": "They ______ the match last Sunday.", "choices": ["win", "won", "wins", "had won"], "a": ["won"] },
+    { "type": "input", "s": "I ______ (write) a letter to my grandmother.", "a": ["wrote"] },
+    { "type": "input", "s": "The teacher ______ (explain) the grammar rule again.", "a": ["explained"] },
+    { "type": "input", "s": "We ______ (ride) our bikes to the park.", "a": ["rode"] }
   ],
   "perfect": [
     { "type": "input", "s": "She ______ (finish) her work before I arrived.", "a": ["had finished"] },
@@ -28,7 +38,15 @@
     { "type": "choice", "s": "He ______ enough money to buy the car by then.", "choices": ["saved", "has saved", "had saved", "was saving"], "a": ["had saved"] },
     { "type": "input", "s": "We ______ (clean) the whole house by noon.", "a": ["had cleaned"] },
     { "type": "input", "s": "She ______ (study) for weeks before the exam.", "a": ["had studied"] },
-    { "type": "input", "s": "They ______ (already / eat) when I called.", "a": ["had already eaten"] }
+    { "type": "input", "s": "They ______ (already / eat) when I called.", "a": ["had already eaten"] },
+    { "type": "input", "s": "I ______ (not / see) her for ten years before we met again.", "a": ["had not seen"] },
+    { "type": "choice", "s": "When we reached the park, the concert ______.", "choices": ["ended", "had ended", "has ended", "ends"], "a": ["had ended"] },
+    { "type": "input", "s": "The police ______ (already / catch) the thief.", "a": ["had already caught"] },
+    { "type": "input", "s": "The garden was dry because it ______ (not / rain) for weeks.", "a": ["had not rained"] },
+    { "type": "input", "s": "He ______ (buy) the house before the prices went up.", "a": ["had bought"] },
+    { "type": "input", "s": "Everything was ready because they ______ (prepare) well.", "a": ["had prepared"] },
+    { "type": "choice", "s": "She apologized because she ______ the meeting.", choices: ["forgot", "had forgotten", "has forgotten", "forget"], "a": ["had forgotten"] },
+    { "type": "input", "s": "They ______ (just / arrive) when I left.", "a": ["had just arrived"] }
   ],
   "continuous": [
     { "type": "input", "s": "He ______ (wait) for an hour when the bus finally came.", "a": ["had been waiting"] },
@@ -40,7 +58,15 @@
     { "type": "input", "s": "It ______ (snow) heavily all morning.", "a": ["had been snowing"] },
     { "type": "choice", "s": "The athletes ______ hard since January.", "choices": ["train", "had been training", "was training", "trained"], "a": ["had been training"] },
     { "type": "input", "s": "She ______ (cry) because she lost her toy.", "a": ["had been crying"] },
-    { "type": "input", "s": "We ______ (drive) for hours before we arrived.", "a": ["had been driving"] }
+    { "type": "input", "s": "We ______ (drive) for hours before we arrived.", "a": ["had been driving"] },
+    { "type": "input", "s": "How long ______ it ______ (rain) before you used the umbrella?", "a": ["had been raining"] },
+    { "type": "choice", "s": "The fire ______ for hours before anyone noticed.", "choices": ["burnt", "had been burning", "was burning", "had burnt"], "a": ["had been burning"] },
+    { "type": "input", "s": "They ______ (learn) English for years before moving to London.", "a": ["had been learning"] },
+    { "type": "input", "s": "The ground was wet because it ______ (rain) all night.", "a": ["had been raining"] },
+    { "type": "input", "s": "She ______ (type) for hours and her fingers were sore.", "a": ["had been typing"] },
+    { "type": "input", "s": "We ______ (wait) for the news all day.", "a": ["had been waiting"] },
+    { "type": "choice", "s": "He was exhausted because he ______ the whole morning.", "choices": ["runs", "was running", "had been running", "ran"], "a": ["had been running"] },
+    { "type": "input", "s": "They ______ (talk) on the phone for two hours.", "a": ["had been talking"] }
   ],
   "mixed": [
     { "type": "input", "s": "After she ______ (finish) her homework, she ______ (go) to sleep.", "a": ["had finished", "went"] },
@@ -52,7 +78,17 @@
     { "type": "input", "s": "He ______ (buy) the watch after he ______ (save) for a month.", "a": ["bought", "had saved"] },
     { "type": "input", "s": "She ______ (be) tired because she ______ (study) all night.", "a": ["was", "had been studying"] },
     { "type": "input", "s": "We ______ (miss) the train because we ______ (forget) the time.", "a": ["missed", "had forgotten"] },
-    { "type": "input", "s": "I ______ (not / know) that they ______ (already / leave).", "a": ["did not know", "had already left"] }
+    { "type": "input", "s": "I ______ (not / know) that they ______ (already / leave).", "a": ["did not know", "had already left"] },
+    { "type": "input", "s": "When I ______ (get) to the airport, I ______ (realize) I ______ (leave) my passport at home.", "a": ["got", "realized", "had left"] },
+    { "type": "input", "s": "He ______ (tell) me that he ______ (be) looking for a job for months.", "a": ["told", "had been"] },
+    { "type": "input", "s": "By the time they ______ (reach) the summit, it ______ (be) snowing for hours.", "a": ["reached", "had been"] },
+    { "type": "input", "s": "She ______ (not / recognize) him although she ______ (meet) him before.", "a": ["did not recognize", "had met"] },
+    { "type": "input", "s": "We ______ (play) tennis for an hour when it ______ (start) to rain.", "a": ["had been playing", "started"] },
+    { "type": "input", "s": "I ______ (feel) much better after I ______ (sleep) for a while.", "a": ["felt", "had slept"] },
+    { "type": "input", "s": "The house ______ (be) empty because everyone ______ (go) out.", "a": ["was", "had gone"] },
+    { "type": "input", "s": "He ______ (say) he ______ (search) for his keys everywhere.", "a": ["said", "had been searching"] },
+    { "type": "input", "s": "They ______ (not / eat) anything all day so they ______ (be) starving.", "a": ["had not eaten", "were"] },
+    { "type": "input", "s": "The crops ______ (die) because it ______ (not / rain) for months.", "a": ["died", "had not rained"] }
   ],
   "tags": [
     { "type": "input", "s": "You aren't coming to the party, ______ (tag)?", "a": ["are you"] },
@@ -69,6 +105,16 @@
     { "type": "input", "s": "I'm right, ______ (tag)?", "a": ["aren't I"] },
     { "type": "choice", "s": "He can speak French, ______?", "choices": ["can he", "cannot he", "can't he", "does he"], "a": ["can't he"] },
     { "type": "input", "s": "They wouldn't do that, ______ (tag)?", "a": ["would they"] },
-    { "type": "input", "s": "Everybody is happy, ______ (tag)?", "a": ["aren't they"] }
+    { "type": "input", "s": "Everybody is happy, ______ (tag)?", "a": ["aren't they"] },
+    { "type": "input", "s": "You'd better stay, ______ (tag)?", "a": ["hadn't you"] },
+    { "type": "input", "s": "He has a new car, ______ (tag)?", "a": ["doesn't he"] },
+    { "type": "input", "s": "There is a meeting today, ______ (tag)?", "a": ["isn't there"] },
+    { "type": "choice", "s": "Nothing went wrong, ______?", "choices": ["did it", "didn't it", "did they", "didn't they"], "a": ["did it"] },
+    { "type": "input", "s": "I didn't tell you, ______ (tag)?", "a": ["did I"] },
+    { "type": "input", "s": "She used to live here, ______ (tag)?", "a": ["didn't she"] },
+    { "type": "input", "s": "Wait a minute, ______ (tag)?", "a": ["will you"] },
+    { "type": "input", "s": "Nobody saw us, ______ (tag)?", "a": ["did they"] },
+    { "type": "input", "s": "He's very handsome, ______ (tag)?", "a": ["isn't he"] },
+    { "type": "input", "s": "This is your pen, ______ (tag)?", "a": ["isn't it"] }
   ]
 }
