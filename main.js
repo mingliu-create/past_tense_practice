@@ -137,7 +137,7 @@ function updateUI() {
     UI.submitBtn.classList.add("hidden");
   }
   
-  // UI.index.innerText = `Question #${q.id || (state.currentIndex + 1)} | ${state.currentIndex + 1}/1000`;
+
 
   UI.progressBar.style.width = `${((state.currentIndex + 1) / 1000) * 100}%`;
 
