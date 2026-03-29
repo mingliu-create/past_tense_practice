@@ -13,7 +13,12 @@ const QUESTION_BANK = {
     { type: "input", s: "It ______ (rain) heavily last night.", a: ["rained"] },
     { type: "input", s: "My parents ______ (meet) in college.", a: ["met"] },
     { type: "choice", s: "The sun ______ brightly all day.", choices: ["shine", "shone", "shined", "shining"], a: ["shone"] },
-    { type: "input", s: "I ______ (forget) my keys at home.", a: ["forgot"] }
+    { type: "input", s: "I ______ (forget) my keys at home.", a: ["forgot"] },
+    { type: "input", s: "He ______ (sell) his old laptop.", a: ["sold"] },
+    { type: "input", s: "We ______ (arrive) at the airport at noon.", a: ["arrived"] },
+    { type: "choice", s: "Yesterday, I ______ to the gym.", choices: ["go", "gone", "went", "was going"], a: ["went"] },
+    { type: "input", s: "They ______ (not / like) the food.", a: ["did not like"] },
+    { type: "input", s: "Somebody ______ (steal) my bicycle.", a: ["stole"] }
   ],
   perfect: [
     { type: "input", s: "She ______ (finish) her work before I arrived.", a: ["had finished"] },
@@ -22,14 +27,24 @@ const QUESTION_BANK = {
     { type: "input", s: "They ______ (never / be) to London until last year.", a: ["had never been"] },
     { type: "choice", s: "The bus ______ when we reached the station.", choices: ["already left", "had already left", "has already left", "already leaves"], a: ["had already left"] },
     { type: "input", s: "He was tired because he ______ (work) all day.", a: ["had worked"] },
-    { type: "input", s: "The house was quiet because everyone ______ (go) to bed.", a: ["had gone"] }
+    { type: "input", s: "The house was quiet because everyone ______ (go) to bed.", a: ["had gone"] },
+    { type: "input", s: "I ______ (save) my files before the computer crashed.", a: ["had saved"] },
+    { type: "choice", s: "He ______ enough money to buy the car by then.", choices: ["saved", "has saved", "had saved", "was saving"], a: ["had saved"] },
+    { type: "input", s: "We ______ (clean) the whole house by noon.", a: ["had cleaned"] },
+    { type: "input", s: "She ______ (study) for weeks before the exam.", a: ["had studied"] },
+    { type: "input", s: "They ______ (already / eat) when I called.", a: ["had already eaten"] }
   ],
   continuous: [
     { type: "input", s: "He ______ (wait) for an hour when the bus finally came.", a: ["had been waiting"] },
     { type: "input", s: "The children ______ (play) outside all afternoon before it rained.", a: ["had been playing"] },
     { type: "choice", s: "She ______ for years before she got her degree.", choices: ["studied", "had been studying", "has studied", "was studying"], a: ["had been studying"] },
     { type: "input", s: "They ______ (travel) for months before they ran out of money.", a: ["had been traveling"] },
-    { type: "choice", s: "The phone ______ for several minutes before I answered it.", choices: ["rang", "had been ringing", "was ringing", "had rung"], a: ["had been ringing"] }
+    { type: "choice", s: "The phone ______ for several minutes before I answered it.", choices: ["rang", "had been ringing", "was ringing", "had rung"], a: ["had been ringing"] },
+    { type: "input", s: "I ______ (work) there for ten years when it closed.", a: ["had been working"] },
+    { type: "input", s: "It ______ (snow) heavily all morning.", a: ["had been snowing"] },
+    { type: "choice", s: "The athletes ______ hard since January.", choices: ["train", "had been training", "was training", "trained"], a: ["had been training"] },
+    { type: "input", s: "She ______ (cry) because she lost her toy.", a: ["had been crying"] },
+    { type: "input", s: "We ______ (drive) for hours before we arrived.", a: ["had been driving"] }
   ],
   mixed: [
     { type: "input", s: "After she ______ (finish) her homework, she ______ (go) to sleep.", a: ["had finished", "went"] },
@@ -37,7 +52,11 @@ const QUESTION_BANK = {
     { type: "input", s: "The man ______ (realize) that he ______ (lose) his wallet.", a: ["realized", "had lost"] },
     { type: "input", s: "When the teacher ______ (arrive), the students ______ (wait) for 10 minutes.", a: ["arrived", "had been waiting"] },
     { type: "input", s: "I ______ (see) that he ______ (be) crying.", a: ["saw", "had been"] },
-    { type: "input", s: "By the time the firemen ______ (arrive), the house ______ (burn) for hours.", a: ["arrived", "had been burning"] }
+    { type: "input", s: "By the time the firemen ______ (arrive), the house ______ (burn) for hours.", a: ["arrived", "had been burning"] },
+    { type: "input", s: "He ______ (buy) the watch after he ______ (save) for a month.", a: ["bought", "had saved"] },
+    { type: "input", s: "She ______ (be) tired because she ______ (study) all night.", a: ["was", "had been studying"] },
+    { type: "input", s: "We ______ (miss) the train because we ______ (forget) the time.", a: ["missed", "had forgotten"] },
+    { type: "input", s: "I ______ (not / know) that they ______ (already / leave).", a: ["did not know", "had already left"] }
   ],
   tags: [
     { type: "input", s: "You aren't coming to the party, ______ (tag)?", a: ["are you"] },
@@ -49,9 +68,15 @@ const QUESTION_BANK = {
     { type: "choice", s: "You haven't seen my keys, ______?", choices: ["have you", "haven't you", "do you", "don't you"], a: ["have you"] },
     { type: "input", s: "Let's go for a walk, ______ (tag)?", a: ["shall we"] },
     { type: "input", s: "I am late, ______ (tag)?", a: ["aren't I"] },
-    { type: "input", s: "She had never been there before, ______ (tag)?", a: ["had she"] }
+    { type: "input", s: "She had never been there before, ______ (tag)?", a: ["had she"] },
+    { type: "input", s: "Don't open the door, ______ (tag)?", a: ["will you"] },
+    { type: "input", s: "I'm right, ______ (tag)?", a: ["aren't I"] },
+    { type: "choice", s: "He can speak French, ______?", choices: ["can he", "cannot he", "can't he", "does he"], a: ["can't he"] },
+    { type: "input", s: "They wouldn't do that, ______ (tag)?", a: ["would they"] },
+    { type: "input", s: "Everybody is happy, ______ (tag)?", a: ["aren't they"] }
   ]
 };
+
 
 
 const UI = {
@@ -119,7 +144,11 @@ function generateQuestions() {
 }
 
 function shuffle(array) {
-  return array.sort(() => Math.random() - 0.5);
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
 
 function updateUI() {
