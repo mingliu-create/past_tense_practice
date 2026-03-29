@@ -87,6 +87,11 @@ function generateQuestions() {
     const c = QUESTION_BANK.continuous.map(q => ({ ...q, category: "Past Perfect Continuous" }));
     const m = QUESTION_BANK.mixed.map(q => ({ ...q, category: "Mixed Past Tense" }));
     pool = [...s, ...p, ...c, ...m];
+  } else if (state.currentTense === "perfects") {
+    // Mix only Perfect and Perfect Continuous
+    const p = QUESTION_BANK.perfect.map(q => ({ ...q, category: "Past Perfect Simple" }));
+    const c = QUESTION_BANK.continuous.map(q => ({ ...q, category: "Past Perfect Continuous" }));
+    pool = [...p, ...c];
   } else {
     const cat = state.currentTense === "simple" ? "Past Simple" : 
                 state.currentTense === "perfect" ? "Past Perfect Simple" : 
@@ -107,9 +112,9 @@ function updateUI() {
   const q = state.currentQuestions[state.currentIndex];
   if (!q) return;
 
-  // 1. Hint removal
-  if (state.currentTense === "mixed") {
-    UI.category.innerText = "Challenge Mode";
+  // 1. Hint removal (Challenge Modes)
+  if (state.currentTense === "mixed" || state.currentTense === "perfects") {
+    UI.category.innerText = state.currentTense === "mixed" ? "Global Challenge" : "Perfects Challenge";
     UI.category.classList.add("challenge");
   } else {
     UI.category.innerText = q.category;
