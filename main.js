@@ -70,8 +70,10 @@ function generateQuestions() {
     pool = QUESTION_BANK[state.currentTense].map(q => ({ ...q, category: cat }));
   }
 
-  // Shuffle and pick 10
-  state.currentQuestions = shuffle(pool).slice(0, 10);
+  // Shuffle and pick 1000 (or as many as available, loop if needed for challenge)
+  const shuffledPool = shuffle(pool);
+  state.currentQuestions = shuffledPool.length >= 1000 ? shuffledPool.slice(0, 1000) : shuffledPool;
+
   state.currentIndex = 0;
 }
 
@@ -135,8 +137,9 @@ function updateUI() {
     UI.submitBtn.classList.add("hidden");
   }
   
-  UI.index.innerText = `Question ${state.currentIndex + 1}/10`;
-  UI.progressBar.style.width = `${((state.currentIndex + 1) / 10) * 100}%`;
+  UI.index.innerText = `Question #${q.id || (state.currentIndex + 1)} | ${state.currentIndex + 1}/1000`;
+  UI.progressBar.style.width = `${((state.currentIndex + 1) / 1000) * 100}%`;
+
   
   // Stats
   UI.score.innerText = state.score;
@@ -208,7 +211,8 @@ function finishQuestion(isCorrect, correctStr) {
 }
 
 function nextQuestion() {
-  if (state.currentIndex < 9) {
+  if (state.currentIndex < state.currentQuestions.length - 1 && state.currentIndex < 999) {
+
     state.currentIndex++;
     updateUI();
   } else {
