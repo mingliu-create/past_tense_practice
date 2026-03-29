@@ -4,7 +4,7 @@ An interactive web application designed to help English learners master past ten
 
 ## 🚀 Live Demo
 You can practice now at:  
-**[https://past-tense-practice-44rr.vercel.app/](https://past-tense-practice-44rr.vercel.app/)**
+**[https://past-tense-practice.vercel.app/](https://past-tense-practice.vercel.app/)**
 
 ---
 
