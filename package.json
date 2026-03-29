@@ -1,17 +1,13 @@
 {
   "name": "past_tense",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "English Grammar Practice Site",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "vite": "^8.0.3"
+  "dependencies": {
+    "vite": "^6.0.0"
   }
 }
