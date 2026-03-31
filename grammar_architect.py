@@ -161,16 +161,16 @@ TAG_HAVE_OBJECTS = [
 ]
 
 TAG_PERFECT_ACTIONS = [
-    "finished the homework",
-    "seen that movie",
-    "done the dishes",
-    "forgotten the key",
-    "already eaten lunch",
-    "just arrived home",
-    "never visited Tainan",
-    "written the email",
-    "lost the ticket",
-    "heard that song before",
+    ("finish", "finished", "the homework", "already"),
+    ("see", "seen", "that movie", "before"),
+    ("do", "done", "the dishes", "already"),
+    ("forget", "forgotten", "the key", "again"),
+    ("eat", "eaten", "lunch", "already"),
+    ("arrive", "arrived", "home", "today"),
+    ("visit", "visited", "Tainan", "before"),
+    ("write", "written", "the email", "already"),
+    ("lose", "lost", "the ticket", "already"),
+    ("hear", "heard", "that song", "before"),
 ]
 
 IMPERATIVE_POSITIVE = [
@@ -211,6 +211,15 @@ LETS_ACTIONS = [
 ]
 
 NEGATIVE_ADVERBS = ["never", "seldom", "rarely", "hardly ever"]
+
+TAG_PERFECT_TIME_HINTS = [
+    "already",
+    "before",
+    "this week",
+    "today",
+    "before lunch",
+    "again",
+]
 
 CONTINUOUS_VERBS = [
     verb for verb in VERBS if verb[0] not in {"buy", "finish", "start"}
@@ -400,6 +409,20 @@ def choose_tag_variant(variants):
     return sentence, [answer]
 
 
+def build_perfect_parts(aux, neg_aux, pp, obj, cue, neg):
+    suffix = {
+        "already": "already",
+        "before": "before",
+        "today": "today",
+        "this week": "this week",
+        "before lunch": "before lunch",
+        "again": "again",
+    }.get(cue, "")
+    prompt = obj if not suffix else f"{obj} {suffix}"
+    chosen_aux = neg_aux if neg else aux
+    return f"{chosen_aux} {pp}", prompt
+
+
 def build_tag():
     subject, pronoun, number = random.choice(TAG_SUBJECTS)
     singular = number == "singular" and subject != "You"
@@ -548,23 +571,22 @@ def build_tag():
                 (f"{subject} ______ (have) {obj}, don't {pronoun} ?", "have"),
                 (f"{subject} have {obj}, ______ ?", f"don't {pronoun}"),
             ])
-        action = random.choice(TAG_PERFECT_ACTIONS)
-        base, rest = split_action(action)
+        base, pp, obj, default_cue = random.choice(TAG_PERFECT_ACTIONS)
+        cue = random.choice([default_cue] + TAG_PERFECT_TIME_HINTS)
         aux = "has" if singular else "have"
         neg_aux = "hasn't" if singular else "haven't"
         if subject == "I":
             aux = "have"
             neg_aux = "haven't"
+        full, prompt_rest = build_perfect_parts(aux, neg_aux, pp, obj, cue, neg)
         if neg:
             return choose_tag_variant([
-                (f"{subject} ______ (have) {action}, {aux} {pronoun} ?", neg_aux),
-                (f"{subject} {neg_aux} ______ ({base}) {rest}, {aux} {pronoun} ?", base),
-                (f"{subject} {neg_aux} {action}, ______ ?", f"{aux} {pronoun}"),
+                (f"{subject} ______ ({base}) {prompt_rest}, {aux} {pronoun} ?", full),
+                (f"{subject} {full} {prompt_rest}, ______ ?", f"{aux} {pronoun}"),
             ])
         return choose_tag_variant([
-            (f"{subject} ______ (have) {action}, {neg_aux} {pronoun} ?", aux),
-            (f"{subject} {aux} ______ ({base}) {rest}, {neg_aux} {pronoun} ?", base),
-            (f"{subject} {aux} {action}, ______ ?", f"{neg_aux} {pronoun}"),
+            (f"{subject} ______ ({base}) {prompt_rest}, {neg_aux} {pronoun} ?", full),
+            (f"{subject} {full} {prompt_rest}, ______ ?", f"{neg_aux} {pronoun}"),
         ])
 
     if family == "imperative":
@@ -572,26 +594,20 @@ def build_tag():
             command = random.choice(IMPERATIVE_POSITIVE)
             base, rest = split_action(command)
             tag = random.choice(["will you", "would you", "can you", "could you", "won't you"])
-            return choose_tag_variant([
-                (f"______ ({base}) {rest}, {tag} ?", base),
-                (f"{command}, ______ ?", tag),
-            ])
+            if random.random() < 0.9:
+                return f"{command}, ______ ?", [tag]
+            return f"______ ({base}) {rest}, {tag} ?", [base]
         command = random.choice(IMPERATIVE_NEGATIVE)
         words = command.split(" ", 2)
         base = words[1].lower()
         rest = words[2]
         tag = random.choice(["will you", "would you", "can you"])
-        return choose_tag_variant([
-            (f"Don't ______ ({base}) {rest}, {tag} ?", base),
-            (f"{command}, ______ ?", tag),
-        ])
+        if random.random() < 0.9:
+            return f"{command}, ______ ?", [tag]
+        return f"Don't ______ ({base}) {rest}, {tag} ?", [base]
 
     action = random.choice(LETS_ACTIONS)
-    base, rest = split_action(action)
-    return choose_tag_variant([
-        (f"Let's ______ ({base}) {rest}, shall we ?", base),
-        (f"Let's {action}, ______ ?", "shall we"),
-    ])
+    return f"Let's {action}, ______ ?", ["shall we"]
 
 
 def generate_all():
