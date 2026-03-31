@@ -390,6 +390,11 @@ def past_action(action):
     return f"{past} {rest}"
 
 
+def split_action(action):
+    first, rest = action.split(" ", 1)
+    return first, rest
+
+
 def choose_tag_variant(variants):
     sentence, answer = random.choice(variants)
     return sentence, [answer]
@@ -411,22 +416,22 @@ def build_tag():
         if subject == "I":
             if neg:
                 return choose_tag_variant([
-                    (f"I ______ not {comp}, am I ?", "am"),
+                    (f"I ______ (be) not {comp}, am I ?", "am"),
                     (f"I am not {comp}, ______ ?", "am I"),
                 ])
             return choose_tag_variant([
-                (f"I ______ {comp}, aren't I ?", "am"),
+                (f"I ______ (be) {comp}, aren't I ?", "am"),
                 (f"I am {comp}, ______ ?", "aren't I"),
             ])
         be = "is" if singular else "are"
         neg_be = "isn't" if singular else "aren't"
         if neg:
             return choose_tag_variant([
-                (f"{subject} ______ {comp}, {be} {pronoun} ?", neg_be),
+                (f"{subject} ______ (be) {comp}, {be} {pronoun} ?", neg_be),
                 (f"{subject} {neg_be} {comp}, ______ ?", f"{be} {pronoun}"),
             ])
         return choose_tag_variant([
-            (f"{subject} ______ {comp}, {neg_be} {pronoun} ?", be),
+            (f"{subject} ______ (be) {comp}, {neg_be} {pronoun} ?", be),
             (f"{subject} {be} {comp}, ______ ?", f"{neg_be} {pronoun}"),
         ])
 
@@ -435,26 +440,27 @@ def build_tag():
         neg = random.random() < 0.35
         aux = "does" if do_singular else "do"
         neg_aux = "doesn't" if do_singular else "don't"
+        base, rest = split_action(action)
         action_surface = conjugate_action(action, do_singular)
         if neg:
             return choose_tag_variant([
-                (f"{subject} ______ {action}, {aux} {pronoun} ?", neg_aux),
-                (f"{subject} {neg_aux} ______, {aux} {pronoun} ?", action),
+                (f"{subject} ______ (do) {action}, {aux} {pronoun} ?", neg_aux),
+                (f"{subject} {neg_aux} ______ ({base}) {rest}, {aux} {pronoun} ?", base),
                 (f"{subject} {neg_aux} {action}, ______ ?", f"{aux} {pronoun}"),
             ])
         return choose_tag_variant([
-            (f"{subject} ______ {action}, {neg_aux} {pronoun} ?", "does" if do_singular else "do"),
-            (f"{subject} ______, {neg_aux} {pronoun} ?", action_surface),
+            (f"{subject} ______ ({base}) {rest}, {neg_aux} {pronoun} ?", present_form(base) if do_singular else base),
             (f"{subject} {action_surface}, ______ ?", f"{neg_aux} {pronoun}"),
         ])
 
     if family == "negative_adverb":
         action = random.choice(TAG_DO_ACTIONS)
         adv = random.choice(NEGATIVE_ADVERBS)
+        base, rest = split_action(action)
         action_surface = conjugate_action(action, do_singular)
         tag_aux = "does" if do_singular else "do"
         return choose_tag_variant([
-            (f"{subject} {adv} ______, {tag_aux} {pronoun} ?", action_surface),
+            (f"{subject} {adv} ______ ({base}) {rest}, {tag_aux} {pronoun} ?", present_form(base) if do_singular else base),
             (f"{subject} {adv} {action_surface}, ______ ?", f"{tag_aux} {pronoun}"),
         ])
 
@@ -467,28 +473,29 @@ def build_tag():
             neg_be = "wasn't" if singular or subject == "I" else "weren't"
             if neg:
                 return choose_tag_variant([
-                    (f"{subject} ______ {comp}, {be} {pronoun} ?", neg_be),
+                    (f"{subject} ______ (be) {comp}, {be} {pronoun} ?", neg_be),
                     (f"{subject} {neg_be} {comp}, ______ ?", f"{be} {pronoun}"),
                 ])
             return choose_tag_variant([
-                (f"{subject} ______ {comp}, {neg_be} {pronoun} ?", be),
+                (f"{subject} ______ (be) {comp}, {neg_be} {pronoun} ?", be),
                 (f"{subject} {be} {comp}, ______ ?", f"{neg_be} {pronoun}"),
             ])
+        base, rest = split_action(action)
         if neg:
             return choose_tag_variant([
-                (f"{subject} ______ {action}, did {pronoun} ?", "didn't"),
-                (f"{subject} didn't ______, did {pronoun} ?", action),
+                (f"{subject} ______ (do) {action}, did {pronoun} ?", "didn't"),
+                (f"{subject} didn't ______ ({base}) {rest}, did {pronoun} ?", base),
                 (f"{subject} didn't {action}, ______ ?", f"did {pronoun}"),
             ])
         past_surface = past_action(action)
         return choose_tag_variant([
-            (f"{subject} ______ {action}, didn't {pronoun} ?", "did"),
-            (f"{subject} ______, didn't {pronoun} ?", past_surface),
+            (f"{subject} ______ ({base}) {rest}, didn't {pronoun} ?", past_action(action).split(" ", 1)[0] if " " in past_surface else past_surface),
             (f"{subject} {past_surface}, ______ ?", f"didn't {pronoun}"),
         ])
 
     if family == "future":
         action = random.choice(TAG_FUTURE_ACTIONS)
+        base, rest = split_action(action)
         neg = random.random() < 0.35
         if random.random() < 0.3:
             be = "am" if subject == "I" else "is" if singular else "are"
@@ -496,25 +503,25 @@ def build_tag():
             if neg:
                 tag = f"{be if subject != 'I' else 'am'} {pronoun}"
                 return choose_tag_variant([
-                    (f"{subject} ______ going to {action}, {tag} ?", neg_be),
-                    (f"{subject} {neg_be} going to ______, {tag} ?", action),
+                    (f"{subject} ______ (be) going to {action}, {tag} ?", neg_be),
+                    (f"{subject} {neg_be} going to ______ ({base}) {rest}, {tag} ?", base),
                     (f"{subject} {neg_be} going to {action}, ______ ?", tag),
                 ])
             tag = "aren't I" if subject == "I" else f"{neg_be} {pronoun}"
             return choose_tag_variant([
-                (f"{subject} ______ going to {action}, {tag} ?", be),
-                (f"{subject} {be} going to ______, {tag} ?", action),
+                (f"{subject} ______ (be) going to {action}, {tag} ?", be),
+                (f"{subject} {be} going to ______ ({base}) {rest}, {tag} ?", base),
                 (f"{subject} {be} going to {action}, ______ ?", tag),
             ])
         if neg:
             return choose_tag_variant([
-                (f"{subject} ______ {action}, will {pronoun} ?", "won't"),
-                (f"{subject} won't ______, will {pronoun} ?", action),
+                (f"{subject} ______ (will) {action}, will {pronoun} ?", "won't"),
+                (f"{subject} won't ______ ({base}) {rest}, will {pronoun} ?", base),
                 (f"{subject} won't {action}, ______ ?", f"will {pronoun}"),
             ])
         return choose_tag_variant([
-            (f"{subject} ______ {action}, won't {pronoun} ?", "will"),
-            (f"{subject} will ______, won't {pronoun} ?", action),
+            (f"{subject} ______ (will) {action}, won't {pronoun} ?", "will"),
+            (f"{subject} will ______ ({base}) {rest}, won't {pronoun} ?", base),
             (f"{subject} will {action}, ______ ?", f"won't {pronoun}"),
         ])
 
@@ -525,27 +532,24 @@ def build_tag():
             if do_singular:
                 if neg:
                     return choose_tag_variant([
-                        (f"{subject} ______ have {obj}, does {pronoun} ?", "doesn't"),
-                        (f"{subject} doesn't have ______, does {pronoun} ?", obj),
+                        (f"{subject} ______ (do) have {obj}, does {pronoun} ?", "doesn't"),
                         (f"{subject} doesn't have {obj}, ______ ?", f"does {pronoun}"),
                     ])
                 return choose_tag_variant([
-                    (f"{subject} ______ {obj}, doesn't {pronoun} ?", "has"),
-                    (f"{subject} has ______, doesn't {pronoun} ?", obj),
+                    (f"{subject} ______ (have) {obj}, doesn't {pronoun} ?", "has"),
                     (f"{subject} has {obj}, ______ ?", f"doesn't {pronoun}"),
                 ])
             if neg:
                 return choose_tag_variant([
-                    (f"{subject} ______ have {obj}, do {pronoun} ?", "don't"),
-                    (f"{subject} don't have ______, do {pronoun} ?", obj),
+                    (f"{subject} ______ (do) have {obj}, do {pronoun} ?", "don't"),
                     (f"{subject} don't have {obj}, ______ ?", f"do {pronoun}"),
                 ])
             return choose_tag_variant([
-                (f"{subject} ______ {obj}, don't {pronoun} ?", "have"),
-                (f"{subject} have ______, don't {pronoun} ?", obj),
+                (f"{subject} ______ (have) {obj}, don't {pronoun} ?", "have"),
                 (f"{subject} have {obj}, ______ ?", f"don't {pronoun}"),
             ])
         action = random.choice(TAG_PERFECT_ACTIONS)
+        base, rest = split_action(action)
         aux = "has" if singular else "have"
         neg_aux = "hasn't" if singular else "haven't"
         if subject == "I":
@@ -553,34 +557,39 @@ def build_tag():
             neg_aux = "haven't"
         if neg:
             return choose_tag_variant([
-                (f"{subject} ______ {action}, {aux} {pronoun} ?", neg_aux),
-                (f"{subject} {neg_aux} ______, {aux} {pronoun} ?", action),
+                (f"{subject} ______ (have) {action}, {aux} {pronoun} ?", neg_aux),
+                (f"{subject} {neg_aux} ______ ({base}) {rest}, {aux} {pronoun} ?", base),
                 (f"{subject} {neg_aux} {action}, ______ ?", f"{aux} {pronoun}"),
             ])
         return choose_tag_variant([
-            (f"{subject} ______ {action}, {neg_aux} {pronoun} ?", aux),
-            (f"{subject} {aux} ______, {neg_aux} {pronoun} ?", action),
+            (f"{subject} ______ (have) {action}, {neg_aux} {pronoun} ?", aux),
+            (f"{subject} {aux} ______ ({base}) {rest}, {neg_aux} {pronoun} ?", base),
             (f"{subject} {aux} {action}, ______ ?", f"{neg_aux} {pronoun}"),
         ])
 
     if family == "imperative":
         if random.random() < 0.5:
             command = random.choice(IMPERATIVE_POSITIVE)
+            base, rest = split_action(command)
             tag = random.choice(["will you", "would you", "can you", "could you", "won't you"])
             return choose_tag_variant([
-                (f"______ , {tag} ?", command),
+                (f"______ ({base}) {rest}, {tag} ?", base),
                 (f"{command}, ______ ?", tag),
             ])
         command = random.choice(IMPERATIVE_NEGATIVE)
+        words = command.split(" ", 2)
+        base = words[1].lower()
+        rest = words[2]
         tag = random.choice(["will you", "would you", "can you"])
         return choose_tag_variant([
-            (f"______ , {tag} ?", command),
+            (f"Don't ______ ({base}) {rest}, {tag} ?", base),
             (f"{command}, ______ ?", tag),
         ])
 
     action = random.choice(LETS_ACTIONS)
+    base, rest = split_action(action)
     return choose_tag_variant([
-        (f"Let's ______, shall we ?", action),
+        (f"Let's ______ ({base}) {rest}, shall we ?", base),
         (f"Let's {action}, ______ ?", "shall we"),
     ])
 
