@@ -406,7 +406,7 @@ def build_tag():
     do_singular = number == "singular" and subject not in {"I", "You"}
     family = random.choices(
         ["be", "do", "past", "future", "have", "imperative", "lets", "negative_adverb"],
-        weights=[18, 14, 16, 14, 18, 8, 6, 6],
+        weights=[12, 10, 12, 14, 16, 18, 14, 8],
         k=1,
     )[0]
 
