@@ -46,6 +46,16 @@ VERBS = [
     ("use", "used", "used", "using", "the computer"),
     ("mop", "mopped", "mopped", "mopping", "the floor"),
     ("repair", "repaired", "repaired", "repairing", "the window"),
+    ("wash", "washed", "washed", "washing", "the car"),
+    ("paint", "painted", "painted", "painting", "the wall"),
+    ("open", "opened", "opened", "opening", "the box"),
+    ("close", "closed", "closed", "closing", "the gate"),
+    ("carry", "carried", "carried", "carrying", "the bags"),
+    ("send", "sent", "sent", "sending", "the message"),
+    ("take", "took", "taken", "taking", "notes"),
+    ("plan", "planned", "planned", "planning", "the trip"),
+    ("pack", "packed", "packed", "packing", "their suitcases"),
+    ("fix", "fixed", "fixed", "fixing", "the bike"),
 ]
 
 SIMPLE_TIMES = [
@@ -57,6 +67,8 @@ SIMPLE_TIMES = [
     "on Monday",
     "in 2019",
     "during the summer vacation",
+    "after the concert",
+    "before school yesterday",
 ]
 
 SIMPLE_CONTEXTS = [
@@ -66,6 +78,8 @@ SIMPLE_CONTEXTS = [
     "when the class ended",
     "before the rain started",
     "after lunch",
+    "after the movie",
+    "before breakfast",
 ]
 
 PERFECT_SIGNALS = [
@@ -75,6 +89,8 @@ PERFECT_SIGNALS = [
     "before her parents came back",
     "before the movie began",
     "by the time the teacher checked",
+    "before the guests knocked on the door",
+    "before the game started",
 ]
 
 CONTINUOUS_DURATIONS = [
@@ -84,6 +100,8 @@ CONTINUOUS_DURATIONS = [
     "all day",
     "for a long time",
     "for three hours",
+    "since breakfast",
+    "for nearly an hour",
 ]
 
 CONTINUOUS_ENDINGS = [
@@ -93,6 +111,8 @@ CONTINUOUS_ENDINGS = [
     "until the bus finally came",
     "before the guests arrived",
     "until her phone rang",
+    "before class started",
+    "until the teacher walked in",
 ]
 
 TAG_COMPLEMENTS = [
@@ -100,12 +120,12 @@ TAG_COMPLEMENTS = [
     "ready for class",
     "busy today",
     "at home now",
-    "your new neighbor",
     "careful with money",
     "in the library",
     "afraid of dogs",
     "good at math",
     "on time today",
+    "ready for the trip",
 ]
 
 TAG_DO_ACTIONS = [
@@ -271,6 +291,13 @@ def question_subject(subject):
     return subject[:1].lower() + subject[1:]
 
 
+def subject_pronoun(subject):
+    for name, pronoun, _ in SUBJECTS:
+        if name == subject:
+            return pronoun
+    return "they"
+
+
 def unique_generate(count, start_id, builder):
     items = []
     seen = set()
@@ -295,7 +322,7 @@ def build_simple():
     base, past, _, _, obj = random.choice(VERBS)
     time = random.choice(SIMPLE_TIMES)
     context = random.choice(SIMPLE_CONTEXTS)
-    pattern = random.randint(0, 5)
+    pattern = random.randint(0, 7)
 
     if pattern == 0:
         return f"{subject} ______ ({base}) {obj} {time}.", [past]
@@ -307,7 +334,11 @@ def build_simple():
         return f"{context.capitalize()}, {subject} ______ ({base}) {obj}.", [past]
     if pattern == 4:
         return f"When the class ended, {subject} ______ ({base}) {obj}.", [past]
-    return f"{subject} ______ ({base}) {obj} before dinner yesterday.", [past]
+    if pattern == 5:
+        return f"{subject} ______ ({base}) {obj} before dinner yesterday.", [past]
+    if pattern == 6:
+        return f"After the movie ended, {subject} ______ ({base}) {obj}.", [past]
+    return f"Last weekend, {subject} ______ ({base}) {obj} with no problems.", [past]
 
 
 def build_perfect():
@@ -316,7 +347,8 @@ def build_perfect():
     signal = random.choice(PERFECT_SIGNALS)
     follow_subject, _, _ = random.choice(GRAMMAR_SUBJECTS)
     _, follow_past, _, _, follow_obj = random.choice(VERBS)
-    pattern = random.randint(0, 5)
+    pronoun = subject_pronoun(subject)
+    pattern = random.randint(0, 7)
 
     if pattern == 0:
         return f"{subject} ______ (have) {pp} {obj} {signal}.", ["had"]
@@ -330,9 +362,13 @@ def build_perfect():
         return (
             f"{subject} ______ ({base}) {obj} before {mid_subject(follow_subject)} {follow_past} {follow_obj}."
         ), [f"had {pp}"]
-    return (
-        f"Because {mid_subject(subject)} ______ ({base}) {obj} earlier, {mid_subject(subject)} felt relieved."
-    ), [f"had {pp}"]
+    if pattern == 5:
+        return (
+            f"Because {mid_subject(subject)} ______ ({base}) {obj} earlier, {pronoun} felt relieved."
+        ), [f"had {pp}"]
+    if pattern == 6:
+        return f"Before the meeting began, {subject} had already ______ ({base}) {obj}.", [pp]
+    return f"By the time we called, {subject} ______ ({base}) {obj}.", [f"had {pp}"]
 
 
 def build_continuous():
@@ -340,17 +376,21 @@ def build_continuous():
     base, _, _, ing, obj = random.choice(CONTINUOUS_VERBS)
     duration = random.choice(CONTINUOUS_DURATIONS)
     ending = random.choice(CONTINUOUS_ENDINGS)
-    pattern = random.randint(0, 4)
+    pattern = random.randint(0, 6)
 
     if pattern == 0:
         return f"{subject} ______ ({base}) {obj} {duration} {ending}.", [f"had been {ing}"]
     if pattern == 1:
-        return f"{subject} ______ ({base}) {obj} {duration} {ending}.", [f"had been {ing}"]
-    if pattern == 2:
         return f"Before dinner was ready, {subject} ______ ({base}) {obj} {duration}.", [f"had been {ing}"]
-    if pattern == 3:
+    if pattern == 2:
         return f"{subject} ______ ({base}) {obj} all morning before the bus came.", [f"had been {ing}"]
-    return f"By noon, {subject} ______ ({base}) {obj} since early morning.", [f"had been {ing}"]
+    if pattern == 3:
+        return f"By noon, {subject} ______ ({base}) {obj} since early morning.", [f"had been {ing}"]
+    if pattern == 4:
+        return f"When the lights went out, {subject} ______ ({base}) {obj} {duration}.", [f"had been {ing}"]
+    if pattern == 5:
+        return f"{subject} ______ ({base}) {obj} {duration} before class started.", [f"had been {ing}"]
+    return f"Until her phone rang, {subject} ______ ({base}) {obj} since breakfast.", [f"had been {ing}"]
 
 
 def build_mixed():
@@ -360,7 +400,7 @@ def build_mixed():
     base2, past2, pp2, ing2, obj2 = random.choice(VERBS)
     cont_base1, _, _, cont_ing1, cont_obj1 = random.choice(CONTINUOUS_VERBS)
     cont_base2, _, _, cont_ing2, cont_obj2 = random.choice(CONTINUOUS_VERBS)
-    pattern = random.randint(0, 5)
+    pattern = random.randint(0, 7)
 
     if pattern == 0:
         return f"After {mid_subject(subject1)} ______ ({base1}) {obj1}, {mid_subject(subject2)} {past2} {obj2}.", [f"had {pp1}"]
@@ -372,7 +412,11 @@ def build_mixed():
         return f"When the teacher arrived, {mid_subject(subject1)} ______ ({cont_base1}) {cont_obj1} for two hours.", [f"had been {cont_ing1}"]
     if pattern == 4:
         return f"Before {mid_subject(subject1)} {past1} {obj1}, {mid_subject(subject2)} ______ ({cont_base2}) {cont_obj2} all morning.", [f"had been {cont_ing2}"]
-    return f"After {mid_subject(subject1)} had {pp1} {obj1}, {mid_subject(subject2)} ______ ({base2}) {obj2} immediately.", [past2]
+    if pattern == 5:
+        return f"After {mid_subject(subject1)} had {pp1} {obj1}, {mid_subject(subject2)} ______ ({base2}) {obj2} immediately.", [past2]
+    if pattern == 6:
+        return f"{subject1} couldn't relax because {mid_subject(subject2)} ______ ({cont_base2}) {cont_obj2} since breakfast.", [f"had been {cont_ing2}"]
+    return f"Once {mid_subject(subject1)} ______ ({base1}) {obj1}, {mid_subject(subject2)} finally {past2} {obj2}.", [f"had {pp1}"]
 
 
 def conjugate_action(action, singular):

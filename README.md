@@ -18,7 +18,7 @@ Live site:
 
 ## Question Bank
 
-The project uses a static JSON question bank at [public/questions.json](/d:/家教/past_tense/public/questions.json).
+The project uses a static JSON bank at [questions.json](/d:/家教/past_tense/public/questions.json).
 
 Current structure:
 
@@ -28,14 +28,28 @@ Current structure:
 - `mixed`: 1000 questions
 - `tags`: 1000 questions
 
-## Current Exercise Rules
+## Current Exercise Design
 
-- Verb hints now only show the word to fill from, not grammar labels like `/perfect`, `/continuous`, `/pp`, or `/ing`.
-- Past Perfect Continuous questions require learners to fill the full form `had been + V-ing`.
-- Mixed questions are designed to force tense choice from context instead of from labels.
-- Question Tag items keep exactly one blank per sentence.
-- In Question Tags, the blank may appear in the main clause or in the tag, not only at the end.
+- Verb hints only show the base word to work from. Labels such as `/perfect`, `/continuous`, `/pp`, and `/ing` are not shown.
+- Past Perfect Continuous items require the learner to write the full form `had been + V-ing`.
+- Mixed items are written so the learner must decide the grammar from context, not from explicit labels.
+- Question Tag items always contain exactly one blank.
+- In Question Tags, the blank may appear in the main clause or in the tag.
+- Imperatives and `Let's ...` now emphasize tag practice more strongly.
+- `Let's ...` items focus on `shall we?`
 - Question Tag subjects avoid gender-ambiguous nouns such as `teacher` and `doctor`.
+- Present perfect Question Tag items are designed so the learner writes `has/have + past participle`, while time hints stay in the sentence.
+
+## Recent Content Updates
+
+- Expanded verb pool for `simple`, `perfect`, `continuous`, and `mixed` questions.
+- Added more sentence templates so `past simple`, `past perfect`, and `past perfect continuous` do not all follow the same structure.
+- Improved grammar consistency and cleaned up capitalization and awkward sentence patterns.
+- Increased tricky Question Tag coverage, especially:
+  - imperatives
+  - `Let's ...`
+  - `I am ..., aren't I?`
+  - `have` as a main verb vs. `have` in perfect forms
 
 ## Generation Scripts
 
