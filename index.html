@@ -3,7 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TenseMaster - English Grammar Practice</title>
+  <meta name="description" content="Master English grammar with TenseMaster. Interactive practice for Past Simple, Past Perfect, and more with thousands of challenges.">
+  <meta name="keywords" content="English grammar, past tense, past simple, past perfect, grammar practice, ESL, learning English">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="TenseMaster - English Grammar Practice">
+  <meta property="og:description" content="Level up your English with daily grammar challenges. Master past tenses through interactive logic and massive question banks.">
+  <meta property="og:type" content="website">
+  
+  <title>TenseMaster | Professional English Grammar Academy</title>
+  
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,46 +20,48 @@
 </head>
 <body>
   <div id="app">
+    <div class="background-mesh"></div>
     <header>
       <div class="logo">
-        <span class="icon">✨</span>
+        <span class="icon">⚡</span>
         <h1>TenseMaster</h1>
       </div>
-      <nav style="display: flex; gap: 0.5rem; align-items: center;">
+      <nav class="nav-controls">
         <button id="theme-toggle" class="theme-toggle" title="Toggle Dark/Light Mode">🌓</button>
-        <button id="reset-btn" class="secondary-btn">Reset Score</button>
+        <button id="reset-btn" class="secondary-btn">Reset Session</button>
       </nav>
     </header>
 
     <main>
       <section class="hero">
-        <h2>Practice Your Past Tenses</h2>
-        <p>Master the Past Simple, Past Perfect, and Past Perfect Continuous with dynamic daily challenges.</p>
+        <h2>Refine Your Language Mastery</h2>
+        <p>Perfect your Past Simple, Past Perfect, and Question Tags with our curated bank of thousands of professional challenges.</p>
       </section>
 
       <section class="game-container">
-        <div class="stats-bar">
+        <div class="stats-bar glass">
           <div class="stat">
-            <span class="label">Score:</span>
+            <span class="label">Current Score</span>
             <span id="score" class="value">0</span>
           </div>
-          <div class="stat">
-            <span class="label">Accuracy:</span>
-            <span id="accuracy" class="value">0%</span>
+          <div class="stat" style="position: relative;">
+            <span class="label">Daily Streak</span>
+            <span id="streak" class="value">0</span>
+            <span id="streak-multiplier" class="multiplier-badge">x2</span>
           </div>
           <div class="stat">
-            <span class="label">Tense:</span>
-            <span id="current-tense-label" class="value">Mixed</span>
+            <span class="label">Accuracy</span>
+            <span id="accuracy" class="value">0%</span>
           </div>
         </div>
 
-        <div class="quiz-card" id="quiz-card">
+        <div class="quiz-card glass" id="quiz-card">
           <div class="progress-indicator">
             <div id="progress-bar" class="progress-fill"></div>
           </div>
           <div class="question-header">
             <span id="question-category" class="category">Past Simple</span>
-            <!-- Question index removed as requested -->
+            <span id="current-tense-label" class="badge">Mixed Mode</span>
           </div>
           
           <div class="question-content">
@@ -59,7 +70,7 @@
 
           <div class="input-area">
             <input type="text" id="answer-input" placeholder="Type your answer..." autocomplete="off">
-            <button id="submit-btn" class="primary-btn">Check</button>
+            <button id="submit-btn" class="primary-btn">Validate Answer</button>
           </div>
 
           <div id="feedback" class="feedback hidden">
@@ -69,21 +80,24 @@
         </div>
 
         <div class="controls">
-          <button id="next-btn" class="primary-btn hidden">Next Question</button>
-          <div class="filter-group">
-            <button class="filter-btn active" data-tense="mixed">Mixed (All)</button>
-            <button class="filter-btn" data-tense="perfects">Perfects Only</button>
-            <button class="filter-btn" data-tense="tags">Question Tags</button>
-            <button class="filter-btn" data-tense="simple">Past Simple</button>
-            <button class="filter-btn" data-tense="perfect">Past Perfect</button>
-            <button class="filter-btn" data-tense="continuous">Past Perfect Cont.</button>
+          <button id="next-btn" class="primary-btn hidden">Continue Next &rarr;</button>
+          <div class="filter-wrapper">
+            <span class="filter-label">Practice Focus:</span>
+            <div class="filter-group glass">
+              <button class="filter-btn active" data-tense="mixed">Global Challenge</button>
+              <button class="filter-btn" data-tense="perfects">The Perfects</button>
+              <button class="filter-btn" data-tense="tags">Grammar Tags</button>
+              <button class="filter-btn" data-tense="simple">Simple Only</button>
+              <button class="filter-btn" data-tense="perfect">Perfect Only</button>
+              <button class="filter-btn" data-tense="continuous">Cont. Only</button>
+            </div>
           </div>
         </div>
       </section>
     </main>
 
     <footer>
-      <p>&copy; 2026 TenseMaster. Keep Practicing!</p>
+      <p>&copy; 2026 TenseMaster Academy. Advanced Grammar Logic System.</p>
     </footer>
   </div>
   <script type="module" src="./main.js"></script>
