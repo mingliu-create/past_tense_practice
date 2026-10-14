@@ -148,7 +148,8 @@ function updateQuestionDisplay() {
   UI.currentTenseLabel.innerText = q.type === 'sentence' ? '句子合併' : q.type === 'choice' ? '選擇練習' : '填充練習';
   UI.instructions.textContent = q.type === 'sentence'
     ? `使用 ${q.keyword}，將下列兩句合併成一個完整句子。保留原意，沿用第一句的主詞；不要只填片段。`
-    : '依上下文填入答案。有括號時使用括號中的字；需要時填入完整片語。';
+    : '';
+  UI.instructions.classList.toggle('hidden', q.type !== 'sentence');
 
   if (q.type === 'sentence') {
     renderSentenceQuestion(q);
