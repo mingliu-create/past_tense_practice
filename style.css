@@ -184,6 +184,36 @@ header {
 }
 
 /* Game Elements */
+.curriculum-controls {
+  padding: 1.5rem;
+  border-radius: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.curriculum-controls label { display: grid; gap: 0.5rem; font-weight: 700; min-width: 0; }
+.curriculum-controls select {
+  width: 100%; min-height: 48px; padding: 0.7rem;
+  background: var(--bg-color); color: var(--text-primary);
+  border: 1px solid var(--primary); border-radius: 8px; font: inherit;
+}
+#unit-summary { grid-column: 1 / -1; color: var(--text-secondary); font-size: 0.9rem; }
+.question-instructions { color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 1rem; }
+.source-sentences { margin: 0 0 1.5rem 1.5rem; }
+.source-sentences li { padding-left: 0.5rem; margin-bottom: 0.75rem; }
+.sentence-answer-label { display: grid; gap: 0.5rem; font-size: 1rem; }
+.inline-input.sentence-input { width: 100%; resize: vertical; text-align: left; font-size: 1.1rem; font-weight: 500; padding: 1rem; line-height: 1.6; }
+.inline-input { max-width: 100%; }
+.feedback { white-space: pre-line; overflow-wrap: anywhere; }
+.feedback.incomplete { background: hsla(var(--primary-h), 80%, 60%, 0.1); color: var(--text-primary); }
+@media (max-width: 768px) {
+  .curriculum-controls { grid-template-columns: 1fr; padding: 1rem; }
+  .question-header { gap: 1rem; flex-wrap: wrap; }
+  .inline-input { min-width: 0; width: min(220px, 100%); }
+  .sentence-input { width: 100%; }
+}
+
 .stats-bar {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -564,4 +594,15 @@ footer {
 
 .shake {
   animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.inline-input:not(.sentence-input) { width: 12ch; min-width: 120px; }
+@media (max-width: 768px) {
+  header { flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; }
+  .logo h1 { font-size: 1.5rem; }
+  .nav-controls { gap: 0.5rem; }
+  .stats-bar { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; padding: 1rem; }
+  .stat .label { font-size: 0.65rem; letter-spacing: 0; }
+  .stat .value { font-size: 1.5rem; }
+  .inline-input:not(.sentence-input) { width: min(12ch, 100%); }
 }

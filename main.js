@@ -1,4 +1,27 @@
 import confetti from 'canvas-confetti';
+import { MIDTERM_BANK } from './midterm-bank.js';
+import { answerMatches, displayAnswers } from './answer-utils.js';
+
+const CURRICULA = {
+  current: {
+    label: '這學期（期中考）',
+    units: {
+      mixed: '期中考綜合練習',
+      tags: 'Week 1–2 附加問句',
+      phrasal: 'Week 3 片語動詞',
+      degree: 'Week 4–5 too / enough 填充',
+      combine: 'Week 4–5 too / enough 句子合併',
+      present: 'Week 6–7 混合練習'
+    }
+  },
+  previous: {
+    label: '上學期',
+    units: {
+      mixed: '綜合練習', perfects: '完成式混合', tags: '附加問句',
+      simple: '過去式', perfect: '過去完成式', continuous: '過去完成進行式'
+    }
+  }
+};
 
 /**
  * TenseMaster Core Logic
@@ -16,6 +39,8 @@ const state = {
   totalAnswered: parseInt(localStorage.getItem("tm_total")) || 0,
   correctCount: parseInt(localStorage.getItem("tm_correct")) || 0,
   currentTense: "mixed",
+  semester: 'current',
+  answered: false,
   theme: localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"),
   isBusy: false,
   activeChoices: []
@@ -36,9 +61,12 @@ const UI = {
   nextBtn: document.getElementById("next-btn"),
   resetBtn: document.getElementById("reset-btn"),
   themeToggle: document.getElementById("theme-toggle"),
-  feedback: document.getElementById("feedback"),
-  filterBtns: document.querySelectorAll(".filter-btn")
+  feedback: document.getElementById("feedback")
 };
+UI.semester = document.getElementById('semester-select');
+UI.unit = document.getElementById('unit-select');
+UI.instructions = document.getElementById('question-instructions');
+UI.unitSummary = document.getElementById('unit-summary');
 
 // --- Initialization ---
 async function init() {
@@ -48,7 +76,7 @@ async function init() {
     const response = await fetch("./questions.json");
     if (!response.ok) throw new Error("Network response was not ok");
     QUESTION_BANK = await response.json();
-    
+    setupUnitOptions();
     setupGame();
     attachEventListeners();
   } catch (err) {
@@ -63,36 +91,34 @@ function setupGame() {
   updateStatsDisplay();
 }
 
+function setupUnitOptions() {
+  UI.unit.replaceChildren();
+  Object.entries(CURRICULA[state.semester].units).forEach(([value, label]) => {
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = label;
+    UI.unit.appendChild(option);
+  });
+  state.currentTense = 'mixed';
+  UI.unit.value = 'mixed';
+}
+
 // --- Question Engine ---
 function generateQuestionPool() {
   let pool = [];
-  const categories = {
-    simple: "Past Simple",
-    perfect: "Past Perfect Simple",
-    continuous: "Past Perfect Continuous",
-    mixed: "Advanced Mixed Tense",
-    tags: "Question Tags"
-  };
+  const bank = state.semester === 'current' ? MIDTERM_BANK : QUESTION_BANK;
 
-  if (state.currentTense === "mixed") {
-    Object.keys(categories).forEach(key => {
-      if (QUESTION_BANK[key]) {
-        pool.push(...QUESTION_BANK[key].map(q => ({ ...q, category: categories[key] })));
-      }
-    });
+  if (state.currentTense === 'mixed') {
+    pool = Object.values(bank).flat();
   } else if (state.currentTense === "perfects") {
-    const p = (QUESTION_BANK.perfect || []).map(q => ({ ...q, category: categories.perfect }));
-    const c = (QUESTION_BANK.continuous || []).map(q => ({ ...q, category: categories.continuous }));
-    pool = [...p, ...c];
+    pool = [...(bank.perfect || []), ...(bank.continuous || [])];
   } else {
-    pool = (QUESTION_BANK[state.currentTense] || []).map(q => ({ 
-      ...q, 
-      category: categories[state.currentTense] || "Grammar" 
-    }));
+    pool = bank[state.currentTense] || [];
   }
 
   state.currentQuestions = shuffleArray(pool).slice(0, 1000);
   state.currentIndex = 0;
+  UI.unitSummary.textContent = `${CURRICULA[state.semester].label} · ${CURRICULA[state.semester].units[state.currentTense]} · 題庫 ${pool.length} 題`;
 }
 
 function shuffleArray(array) {
@@ -106,6 +132,8 @@ function shuffleArray(array) {
 
 // --- UI Logic ---
 function updateQuestionDisplay() {
+  state.answered = false;
+  state.activeChoices = [];
   const q = state.currentQuestions[state.currentIndex];
   if (!q) {
     handleEndOfRound();
@@ -116,10 +144,15 @@ function updateQuestionDisplay() {
   UI.nextBtn.classList.add("hidden");
   UI.submitBtn.classList.remove("hidden");
   
-  UI.category.innerText = q.category;
-  UI.currentTenseLabel.innerText = state.currentTense === "mixed" ? "Elite Challenge" : "Focus Mode";
+  UI.category.innerText = `第 ${state.currentIndex + 1} / ${state.currentQuestions.length} 題`;
+  UI.currentTenseLabel.innerText = q.type === 'sentence' ? '句子合併' : q.type === 'choice' ? '選擇練習' : '填充練習';
+  UI.instructions.textContent = q.type === 'sentence'
+    ? `使用 ${q.keyword}，將下列兩句合併成一個完整句子。保留原意，沿用第一句的主詞；不要只填片段。`
+    : '依上下文填入答案。有括號時使用括號中的字；需要時填入完整片語。';
 
-  if (q.type === "input") {
+  if (q.type === 'sentence') {
+    renderSentenceQuestion(q);
+  } else if (q.type === "input") {
     renderInputQuestion(q);
   } else if (q.type === "choice") {
     renderChoiceQuestion(q);
@@ -146,11 +179,30 @@ function renderInputQuestion(q) {
   const firstInput = UI.text.querySelector('input');
   if (firstInput) firstInput.focus();
 
-  UI.text.querySelectorAll('input').forEach(input => {
-    input.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') validateAnswer();
-    });
+}
+
+function renderSentenceQuestion(q) {
+  UI.text.replaceChildren();
+  const list = document.createElement('ol');
+  list.className = 'source-sentences';
+  q.sentences.forEach(sentence => {
+    const item = document.createElement('li');
+    item.textContent = sentence;
+    list.appendChild(item);
   });
+  const label = document.createElement('label');
+  label.className = 'sentence-answer-label';
+  label.textContent = '合併後的完整句子';
+  const input = document.createElement('textarea');
+  input.className = 'inline-input sentence-input';
+  input.rows = 3;
+  input.placeholder = '請輸入完整英文句子…';
+  input.autocomplete = 'off';
+  input.spellcheck = false;
+  label.appendChild(input);
+  UI.text.appendChild(list);
+  UI.text.appendChild(label);
+  input.focus();
 }
 
 function renderChoiceQuestion(q) {
@@ -179,32 +231,33 @@ function renderChoiceQuestion(q) {
 
 // --- Validation Logic ---
 function validateAnswer() {
-  if (state.isBusy) return;
+  if (state.isBusy || state.answered) return;
   
   const q = state.currentQuestions[state.currentIndex];
-  if (q.type !== "input") return;
+  if (q.type !== "input" && q.type !== 'sentence') return;
 
   const inputs = UI.text.querySelectorAll(".inline-input");
   let allCorrect = true;
-  let userAnswers = [];
+  if ([...inputs].some(input => !input.value.trim())) {
+    showFeedback('請先填完所有答案，再送出。', 'incomplete');
+    return;
+  }
   
   inputs.forEach((input, i) => {
-    const val = input.value.trim().toLowerCase();
-    const correctVal = q.a[i].toLowerCase();
-    
-    if (val === correctVal) {
+    if (answerMatches(input.value, q.a[i])) {
       input.classList.add("success");
     } else {
       input.classList.add("error");
       allCorrect = false;
     }
+    input.disabled = true;
   });
 
-  finishQuestion(allCorrect, q.a.join(" / "));
+  finishQuestion(allCorrect, displayAnswers(q.a));
 }
 
 function submitChoice(choice) {
-  if (state.isBusy) return;
+  if (state.isBusy || state.answered) return;
   const q = state.currentQuestions[state.currentIndex];
   const isCorrect = choice.toLowerCase() === q.a[0].toLowerCase();
   
@@ -224,6 +277,8 @@ function submitChoice(choice) {
 }
 
 function finishQuestion(isCorrect, answerString) {
+  if (state.answered) return;
+  state.answered = true;
   state.isBusy = true;
   state.totalAnswered++;
   
@@ -263,6 +318,8 @@ function finishQuestion(isCorrect, answerString) {
   localStorage.setItem("tm_correct", state.correctCount);
 
   updateStatsDisplay(isCorrect ? "scoring" : "deducting");
+  const q = state.currentQuestions[state.currentIndex];
+  if (q.explanation) UI.feedback.innerText += `\n${q.explanation}`;
   UI.submitBtn.classList.add("hidden");
   UI.nextBtn.classList.remove("hidden");
   UI.nextBtn.focus();
@@ -350,6 +407,7 @@ function handleReset() {
 function attachEventListeners() {
   UI.submitBtn.onclick = validateAnswer;
   UI.nextBtn.onclick = () => {
+    if (!state.answered) return;
     state.currentIndex++;
     updateQuestionDisplay();
   };
@@ -362,25 +420,32 @@ function attachEventListeners() {
     localStorage.setItem("theme", state.theme);
   };
 
-  UI.filterBtns.forEach(btn => {
-    btn.onclick = () => {
-      UI.filterBtns.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      state.currentTense = btn.dataset.tense;
-      setupGame();
-    };
-  });
+  UI.semester.onchange = () => {
+    state.semester = UI.semester.value;
+    setupUnitOptions();
+    setupGame();
+  };
+  UI.unit.onchange = () => {
+    state.currentTense = UI.unit.value;
+    setupGame();
+  };
 
   window.onkeydown = (e) => {
-    if ((e.key === "Enter" || e.key === "n") && !UI.nextBtn.classList.contains("hidden")) {
+    if (e.isComposing || e.repeat) return;
+    const editing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName);
+    if (e.target.tagName === 'SELECT') return;
+    if ((e.key === 'Enter' || (!editing && e.key === 'n')) && !UI.nextBtn.classList.contains("hidden")) {
+      e.preventDefault();
       UI.nextBtn.click();
       return;
     }
     if (e.key === "Enter" && !UI.submitBtn.classList.contains("hidden")) {
+      if (e.target.tagName === 'TEXTAREA' && !e.ctrlKey && !e.metaKey) return;
+      e.preventDefault();
       validateAnswer();
       return;
     }
-    if (["1", "2", "3", "4"].includes(e.key) && state.activeChoices.length > 0 && UI.nextBtn.classList.contains("hidden")) {
+    if (!editing && ["1", "2", "3", "4"].includes(e.key) && state.activeChoices.length > 0 && UI.nextBtn.classList.contains("hidden")) {
       const idx = parseInt(e.key) - 1;
       if (state.activeChoices[idx]) {
         submitChoice(state.activeChoices[idx]);

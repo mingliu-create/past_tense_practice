@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Master English grammar with TenseMaster. Interactive practice for Past Simple, Past Perfect, and more with thousands of challenges.">
+  <meta name="description" content="TenseMaster 英文文法練習：依學期選擇填充題、too/enough 句子合併與期中考混合練習。">
   <meta name="keywords" content="English grammar, past tense, past simple, past perfect, grammar practice, ESL, learning English">
   
   <!-- Open Graph -->
   <meta property="og:title" content="TenseMaster - English Grammar Practice">
-  <meta property="og:description" content="Level up your English with daily grammar challenges. Master past tenses through interactive logic and massive question banks.">
+  <meta property="og:description" content="依學期練習英文文法，包含填充題、完整句子合併與期中考混合練習。">
   <meta property="og:type" content="website">
   
-  <title>TenseMaster | Professional English Grammar Academy</title>
+  <title>TenseMaster | 英文文法練習</title>
   
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,29 +28,41 @@
       </div>
       <nav class="nav-controls">
         <button id="theme-toggle" class="theme-toggle" title="Toggle Dark/Light Mode">🌓</button>
-        <button id="reset-btn" class="secondary-btn">Reset Session</button>
+        <button id="reset-btn" class="secondary-btn">重置分數</button>
       </nav>
     </header>
 
     <main>
       <section class="hero">
-        <h2>Refine Your Language Mastery</h2>
-        <p>Perfect your Past Simple, Past Perfect, and Question Tags with our curated bank of thousands of professional challenges.</p>
+        <h2>英文文法練習</h2>
+        <p>選擇學期與練習範圍，依語境填入答案或合併完整句子。</p>
       </section>
 
       <section class="game-container">
+        <div class="curriculum-controls glass">
+          <label for="semester-select">學期
+            <select id="semester-select">
+              <option value="current" selected>這學期（期中考）</option>
+              <option value="previous">上學期</option>
+            </select>
+          </label>
+          <label for="unit-select">練習範圍
+            <select id="unit-select"></select>
+          </label>
+          <p id="unit-summary" aria-live="polite"></p>
+        </div>
         <div class="stats-bar glass">
           <div class="stat">
-            <span class="label">Current Score</span>
+            <span class="label">累積分數</span>
             <span id="score" class="value">0</span>
           </div>
           <div class="stat" style="position: relative;">
-            <span class="label">Daily Streak</span>
+            <span class="label">連續答對</span>
             <span id="streak" class="value">0</span>
             <span id="streak-multiplier" class="multiplier-badge">x2</span>
           </div>
           <div class="stat">
-            <span class="label">Accuracy</span>
+            <span class="label">正確率</span>
             <span id="accuracy" class="value">0%</span>
           </div>
         </div>
@@ -60,16 +72,17 @@
             <div id="progress-bar" class="progress-fill"></div>
           </div>
           <div class="question-header">
-            <span id="question-category" class="category">Past Simple</span>
-            <span id="current-tense-label" class="badge">Mixed Mode</span>
+            <span id="question-category" class="category">載入題庫中…</span>
+            <span id="current-tense-label" class="badge">練習</span>
           </div>
           
           <div class="question-content">
-            <p id="question-text" class="sentence">She <span class="blank">______</span> (go) to the store yesterday.</p>
+            <p id="question-instructions" class="question-instructions"></p>
+            <div id="question-text" class="sentence"></div>
           </div>
 
           <div class="input-area">
-            <button id="submit-btn" class="primary-btn">Validate Answer</button>
+            <button id="submit-btn" class="primary-btn">送出答案</button>
           </div>
 
           <div id="feedback" class="feedback hidden">
@@ -79,18 +92,7 @@
         </div>
 
         <div class="controls">
-          <button id="next-btn" class="primary-btn hidden">Continue Next &rarr;</button>
-          <div class="filter-wrapper">
-            <span class="filter-label">Practice Focus:</span>
-            <div class="filter-group glass">
-              <button class="filter-btn active" data-tense="mixed">Global Challenge</button>
-              <button class="filter-btn" data-tense="perfects">The Perfects</button>
-              <button class="filter-btn" data-tense="tags">Grammar Tags</button>
-              <button class="filter-btn" data-tense="simple">Simple Only</button>
-              <button class="filter-btn" data-tense="perfect">Perfect Only</button>
-              <button class="filter-btn" data-tense="continuous">Cont. Only</button>
-            </div>
-          </div>
+          <button id="next-btn" class="primary-btn hidden">下一題 &rarr;</button>
         </div>
       </section>
     </main>
