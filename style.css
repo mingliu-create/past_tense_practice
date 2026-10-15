@@ -281,7 +281,7 @@ header {
 
 /* Floating Points */
 .floating-points {
-  position: absolute;
+  position: fixed;
   pointer-events: none;
   font-weight: 800;
   font-family: var(--font-heading);
@@ -597,7 +597,58 @@ footer {
 }
 
 .inline-input:not(.sentence-input) { width: 12ch; min-width: 120px; }
+.science-study { padding: 2rem; border-radius: 24px; margin-bottom: 2rem; }
+.science-study h2 { font-size: 1.75rem; margin-bottom: 1rem; }
+.study-chapter { margin-top: 2rem; }
+.study-chapter h3 { font-size: 1.25rem; margin-bottom: 1rem; }
+.glossary-controls { display: flex; flex-wrap: wrap; gap: 1rem; align-items: end; }
+.glossary-controls label { display: grid; gap: 0.5rem; flex: 1; min-width: 0; }
+.glossary-controls input { width: 100%; min-height: 44px; border: 1px solid var(--primary); border-radius: 8px; padding: 0.75rem; font: inherit; background: var(--bg-color); color: var(--text-primary); }
+.glossary-controls button { min-height: 44px; }
+.study-result-count { color: var(--text-secondary); margin-top: 1rem; }
+.term-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.term-card, .review-point { padding: 1.25rem; border: 1px solid var(--glass-border); border-radius: 12px; background: var(--bg-color); overflow-wrap: anywhere; }
+.term-card h4 { color: var(--primary); font-size: 1.15rem; }
+.term-chinese { margin-bottom: 0.75rem; }
+.term-definition { margin: 0.75rem 0; }
+.term-meaning { color: var(--text-secondary); margin-top: 0.5rem; }
+.review-point { margin-bottom: 0.75rem; }
+.review-point h4 { margin-bottom: 0.5rem; }
+.science-study summary { cursor: pointer; min-height: 32px; }
+.science-sources { border-top: 1px solid var(--glass-border); margin-top: 2rem; padding-top: 1rem; font-size: 0.9rem; }
+.science-sources ul { padding-left: 1.5rem; }
+.science-sources a { color: var(--primary); }
+body[data-subject='science'] .sentence { font-size: 1.4rem; font-weight: 600; line-height: 1.65; }
+body[data-subject='science'] .inline-input:not(.sentence-input):not(.order-select) { width: 17ch; }
+.science-figure { margin: 0 0 1.5rem; padding: 1rem; background: var(--bg-color); border-radius: 12px; font-size: 1rem; }
+.science-figure svg { width: 100%; max-height: 320px; color: var(--text-primary); }
+.family-chart { text-align: center; }
+.family-branches { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; border-top: 2px solid var(--text-secondary); padding-top: 1rem; }
+.science-table-wrap { overflow-x: auto; }
+.science-table-wrap table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.science-table-wrap th, .science-table-wrap td { padding: 0.5rem; border: 1px solid var(--text-secondary); text-align: left; }
+.science-table-wrap caption { font-weight: 700; margin-bottom: 0.5rem; }
+.table-scroll-note { font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem; }
+.order-steps { margin: 1.5rem 0 0 1.5rem; }
+.order-bank { margin: 1.5rem 0 0 1.5rem; font-size: 1rem; }
+.order-bank li { margin: 0.5rem 0; padding-left: 0.5rem; }
+.order-steps li { margin: 0.75rem 0; padding-left: 0.5rem; }
+.inline-input.order-select { width: 100%; min-width: 0; max-width: 100%; font-size: 1rem; font-weight: 500; text-align: left; padding: 0.75rem 0.4rem; background: var(--bg-color); color: var(--text-primary); }
+.self-review { font-size: 1rem; font-weight: 400; line-height: 1.6; padding-top: 1.5rem; }
+.self-review h3 { margin-bottom: 0.5rem; }
+.self-review p { margin-bottom: 0.75rem; }
+.self-review label { display: flex; gap: 0.75rem; align-items: start; padding: 0.5rem 0; }
+.self-review input { width: 20px; height: 20px; flex-shrink: 0; margin-top: 4px; }
+.self-review button { margin-top: 1rem; }
 @media (max-width: 768px) {
+  .science-study { padding: 1rem; }
+  .glossary-controls { display: grid; grid-template-columns: 1fr; }
+  .term-grid { grid-template-columns: 1fr; }
+  .science-figure { padding: 0.5rem; }
+  body[data-subject='science'] .sentence { font-size: 1.15rem; }
+  body[data-subject='science'] .choice-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+  body[data-subject='science'] .choice-btn { padding: 0.85rem; font-size: 1rem; text-align: left; }
+  .choice-key { flex-shrink: 0; }
   header { flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem; }
   .logo h1 { font-size: 1.5rem; }
   .nav-controls { gap: 0.5rem; }

@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="TenseMaster 英文文法練習：依學期選擇填充題、too/enough 句子合併與期中考混合練習。">
+  <meta name="description" content="英文文法與 Science 自然複習：學期練習、名詞解釋、人類與植物的生殖、遺傳。">
   <meta name="keywords" content="English grammar, past tense, past simple, past perfect, grammar practice, ESL, learning English">
   
   <!-- Open Graph -->
-  <meta property="og:title" content="TenseMaster - English Grammar Practice">
-  <meta property="og:description" content="依學期練習英文文法，包含填充題、完整句子合併與期中考混合練習。">
+  <meta property="og:title" content="TenseMaster - 英文與 Science 複習">
+  <meta property="og:description" content="英文文法與自然複習，包含科學名詞解釋、重點整理、圖表判讀與綜合練習。">
   <meta property="og:type" content="website">
   
-  <title>TenseMaster | 英文文法練習</title>
+  <title>TenseMaster | 英文與 Science 複習</title>
   
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,6 +40,12 @@
 
       <section class="game-container">
         <div class="curriculum-controls glass">
+          <label for="subject-select">科目
+            <select id="subject-select">
+              <option value="english">English 英文文法</option>
+              <option value="science">Science 自然</option>
+            </select>
+          </label>
           <label for="semester-select">學期
             <select id="semester-select">
               <option value="current" selected>這學期（期中考）</option>
@@ -49,8 +55,18 @@
           <label for="unit-select">練習範圍
             <select id="unit-select"></select>
           </label>
+          <label id="science-mode-control" class="hidden" for="science-mode-select">複習方式
+            <select id="science-mode-select">
+              <option value="glossary">名詞解釋・閱讀與回想</option>
+              <option value="review">重點整理</option>
+              <option value="terms">名詞測驗・看定義填名詞</option>
+              <option value="define">名詞解釋・書寫與自評</option>
+              <option value="practice">應用練習・選擇／填充／排序／簡答</option>
+            </select>
+          </label>
           <p id="unit-summary" aria-live="polite"></p>
         </div>
+        <section id="science-study" class="science-study glass hidden" aria-live="polite"></section>
         <div class="stats-bar glass">
           <div class="stat">
             <span class="label">累積分數</span>

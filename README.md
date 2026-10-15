@@ -11,6 +11,38 @@ An interactive web app for practicing English grammar with a focus on:
 Live site:
 [https://past-tense-practice.vercel.app/](https://past-tense-practice.vercel.app/)
 
+## Science Revision
+
+Use the subject selector, or open
+<https://past-tense-practice.vercel.app/?subject=science>.
+The original English practice remains available in the same app and repository.
+
+Science covers the published Activity Book 6 (International 2nd Edition) Units 1–3:
+human reproduction, plant reproduction and heredity. `science-data.js` provides
+original content and links to the public curriculum samples and factual references.
+
+- 60 bilingual scientific terms: English definitions, Chinese explanations,
+  chapter filtering, term search, and hide/reveal for active recall.
+- 16 bilingual review points across the three chapters.
+- 60 automatically checked definition-to-term questions.
+- 60 definition-writing prompts with model definitions for self-assessment.
+- 81 original application questions: 25 human, 32 plant, 24 heredity.
+  Formats include fill-in, multiple choice, ordering, data tables, flower models,
+  family trees and short explanations.
+
+Choose all three chapters for mixed practice or select one chapter.
+Short explanations accept the learner’s own English or Chinese wording: submission
+reveals a model answer and a checklist. The learner then self-assesses the content
+and explicitly confirms scoring. These answers are not automatically judged by
+keyword matching. Other exercises use the existing automatic scoring engine.
+Reading and review modes do not change scores. Scores remain shared across subjects
+under the original local-storage keys; switching subjects preserves progress totals.
+
+The content distinguishes pollination from fertilisation, ovules from egg cells,
+and fertilisation from implantation. It treats menstrual dates as a variable model,
+distinguishes spore-producing plants from cone-bearing plants, and does not present
+complex human traits as universally simple single-gene inheritance.
+
 ## Semester Practice
 
 The semester selector defaults to **這學期（期中考）**. The new bank in

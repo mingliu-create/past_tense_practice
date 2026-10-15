@@ -1,6 +1,8 @@
 import confetti from 'canvas-confetti';
 import { MIDTERM_BANK } from './midterm-bank.js';
 import { answerMatches, displayAnswers } from './answer-utils.js';
+import { SCIENCE_CHAPTERS, SCIENCE_FIGURES, scienceQuestions } from './science-data.js';
+import { renderScienceStudy } from './science-ui.js';
 
 const CURRICULA = {
   current: {
@@ -40,6 +42,9 @@ const state = {
   correctCount: parseInt(localStorage.getItem("tm_correct")) || 0,
   currentTense: "mixed",
   semester: 'current',
+  subject: new URLSearchParams(window.location.search).get('subject') === 'science' ? 'science' : 'english',
+  englishSemester: 'current',
+  scienceMode: 'glossary',
   answered: false,
   theme: localStorage.getItem("theme") || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"),
   isBusy: false,
@@ -67,6 +72,20 @@ UI.semester = document.getElementById('semester-select');
 UI.unit = document.getElementById('unit-select');
 UI.instructions = document.getElementById('question-instructions');
 UI.unitSummary = document.getElementById('unit-summary');
+UI.subject = document.getElementById('subject-select');
+UI.scienceMode = document.getElementById('science-mode-select');
+UI.studyPanel = document.getElementById('science-study');
+UI.stats = document.querySelector('.stats-bar');
+
+function scienceStudyMode() {
+  return state.subject === 'science' && ['glossary', 'review'].includes(state.scienceMode);
+}
+
+function unitLabels() {
+  return state.subject === 'science'
+    ? { mixed: '全部三章', ...Object.fromEntries(Object.entries(SCIENCE_CHAPTERS).map(([key, data]) => [key, data.title])) }
+    : CURRICULA[state.semester].units;
+}
 
 // --- Initialization ---
 async function init() {
@@ -86,6 +105,27 @@ async function init() {
 }
 
 function setupGame() {
+  const study = scienceStudyMode();
+  UI.studyPanel.classList.toggle('hidden', !study);
+  UI.quizCard.classList.toggle('hidden', study);
+  UI.stats.classList.toggle('hidden', study);
+  UI.subject.value = state.subject;
+  document.body.dataset.subject = state.subject;
+  document.getElementById('science-mode-control').classList.toggle('hidden', state.subject !== 'science');
+  UI.semester.querySelector('[value="previous"]').disabled = state.subject === 'science';
+  document.querySelector('.hero h2').textContent = state.subject === 'science' ? 'Science 自然複習' : '英文文法練習';
+  document.querySelector('.hero p').textContent = state.subject === 'science'
+    ? '人類的生殖、植物的繁殖與遺傳。從名詞理解開始，再練習應用與解釋。'
+    : '選擇學期與練習範圍，依語境填入答案或合併完整句子。';
+  if (study) {
+    state.currentQuestions = [];
+    state.activeChoices = [];
+    state.answered = false;
+    UI.nextBtn.classList.add('hidden');
+    UI.unitSummary.textContent = `Science · ${unitLabels()[state.currentTense]} · ${UI.scienceMode.selectedOptions[0].textContent}`;
+    renderScienceStudy(UI.studyPanel, state.currentTense, state.scienceMode);
+    return;
+  }
   generateQuestionPool();
   updateQuestionDisplay();
   updateStatsDisplay();
@@ -93,7 +133,7 @@ function setupGame() {
 
 function setupUnitOptions() {
   UI.unit.replaceChildren();
-  Object.entries(CURRICULA[state.semester].units).forEach(([value, label]) => {
+  Object.entries(unitLabels()).forEach(([value, label]) => {
     const option = document.createElement('option');
     option.value = value;
     option.textContent = label;
@@ -108,7 +148,9 @@ function generateQuestionPool() {
   let pool = [];
   const bank = state.semester === 'current' ? MIDTERM_BANK : QUESTION_BANK;
 
-  if (state.currentTense === 'mixed') {
+  if (state.subject === 'science') {
+    pool = scienceQuestions(state.currentTense, state.scienceMode);
+  } else if (state.currentTense === 'mixed') {
     pool = Object.values(bank).flat();
   } else if (state.currentTense === "perfects") {
     pool = [...(bank.perfect || []), ...(bank.continuous || [])];
@@ -118,7 +160,7 @@ function generateQuestionPool() {
 
   state.currentQuestions = shuffleArray(pool).slice(0, 1000);
   state.currentIndex = 0;
-  UI.unitSummary.textContent = `${CURRICULA[state.semester].label} · ${CURRICULA[state.semester].units[state.currentTense]} · 題庫 ${pool.length} 題`;
+  UI.unitSummary.textContent = `${state.subject === 'science' ? 'Science · ' + UI.scienceMode.selectedOptions[0].textContent : CURRICULA[state.semester].label} · ${unitLabels()[state.currentTense]} · 題庫 ${pool.length} 題`;
 }
 
 function shuffleArray(array) {
@@ -145,18 +187,34 @@ function updateQuestionDisplay() {
   UI.submitBtn.classList.remove("hidden");
   
   UI.category.innerText = `第 ${state.currentIndex + 1} / ${state.currentQuestions.length} 題`;
-  UI.currentTenseLabel.innerText = q.type === 'sentence' ? '句子合併' : q.type === 'choice' ? '選擇練習' : '填充練習';
+  UI.currentTenseLabel.innerText = { sentence: '句子合併', choice: '選擇練習', input: '填充練習', order: '流程排序', explain: '簡答・對照自評' }[q.type];
   UI.instructions.textContent = q.type === 'sentence'
     ? `使用 ${q.keyword}，將下列兩句合併成一個完整句子。保留原意，沿用第一句的主詞；不要只填片段。`
     : '';
   UI.instructions.classList.toggle('hidden', q.type !== 'sentence');
 
-  if (q.type === 'sentence') {
+  if (q.type === 'explain') {
+    renderExplanationQuestion(q);
+  } else if (q.type === 'order') {
+    renderOrderQuestion(q);
+  } else if (q.type === 'sentence') {
     renderSentenceQuestion(q);
   } else if (q.type === "input") {
     renderInputQuestion(q);
   } else if (q.type === "choice") {
     renderChoiceQuestion(q);
+  }
+  if (q.figure) {
+    const figure = document.createElement('figure');
+    figure.className = 'science-figure';
+    figure.innerHTML = SCIENCE_FIGURES[q.figure];
+    if (figure.querySelector('table')) {
+      const note = document.createElement('figcaption');
+      note.className = 'table-scroll-note';
+      note.textContent = '小螢幕可左右滑動表格。';
+      figure.appendChild(note);
+    }
+    UI.text.prepend(figure);
   }
 
   const progress = ((state.currentIndex) / state.currentQuestions.length) * 100;
@@ -168,7 +226,7 @@ function renderInputQuestion(q) {
   let blankIndex = 0;
   const questionHTML = q.s.replace(/______/g, () => {
     const html = `<input type="text" class="inline-input" data-ans-idx="${blankIndex}" 
-                  aria-label="Grammar blank ${blankIndex + 1}" 
+                  aria-label="Answer blank ${blankIndex + 1}"
                   placeholder="..." autocomplete="off" spellcheck="false"
                   autocorrect="off" autocapitalize="none">`;
     blankIndex++;
@@ -220,6 +278,7 @@ function renderChoiceQuestion(q) {
   shuffledChoices.forEach((choice, idx) => {
     const btn = document.createElement("button");
     btn.className = "choice-btn";
+    btn.dataset.answer = choice;
     btn.innerHTML = `<span class="choice-key">${idx + 1}</span> ${choice}`;
     btn.setAttribute("aria-label", `Choice ${idx + 1}: ${choice}`);
     btn.onclick = () => submitChoice(choice);
@@ -230,12 +289,89 @@ function renderChoiceQuestion(q) {
   UI.submitBtn.classList.add("hidden");
 }
 
+function renderOrderQuestion(q) {
+  UI.text.replaceChildren();
+  UI.text.appendChild(Object.assign(document.createElement('p'), { textContent: q.s }));
+  const options = shuffleArray(q.steps);
+  const bank = document.createElement('ol');
+  bank.className = 'order-bank';
+  bank.type = 'A';
+  options.forEach(text => bank.appendChild(Object.assign(document.createElement('li'), { textContent: text })));
+  UI.text.appendChild(bank);
+  const list = document.createElement('ol');
+  list.className = 'order-steps';
+  q.steps.forEach((_, i) => {
+    const li = document.createElement('li');
+    const select = document.createElement('select');
+    select.className = 'inline-input order-select';
+    select.setAttribute('aria-label', `Step ${i + 1}`);
+    select.appendChild(Object.assign(document.createElement('option'), { value: '', textContent: '選擇這一步驟…' }));
+    options.forEach((text, index) => select.appendChild(Object.assign(document.createElement('option'), { value: text, textContent: String.fromCharCode(65 + index) })));
+    li.appendChild(select);
+    list.appendChild(li);
+  });
+  UI.text.appendChild(list);
+}
+
+function renderExplanationQuestion(q) {
+  UI.text.replaceChildren();
+  UI.text.appendChild(Object.assign(document.createElement('p'), { textContent: q.s }));
+  const label = document.createElement('label');
+  label.className = 'sentence-answer-label';
+  label.textContent = '用自己的話解釋（可用英文或中文）';
+  const textarea = document.createElement('textarea');
+  textarea.className = 'inline-input sentence-input';
+  textarea.rows = 4;
+  textarea.setAttribute('aria-label', 'Your scientific explanation');
+  textarea.placeholder = '先寫下答案，再對照參考答案與重點…';
+  label.appendChild(textarea);
+  UI.text.appendChild(label);
+}
+
+function revealExplanation(q) {
+  const textarea = UI.text.querySelector('textarea');
+  if (!textarea.value.trim()) {
+    showFeedback('請先寫下你的解釋，再對照答案。', 'incomplete');
+    return;
+  }
+  textarea.disabled = true;
+  UI.submitBtn.classList.add('hidden');
+  const panel = document.createElement('section');
+  panel.className = 'self-review';
+  panel.appendChild(Object.assign(document.createElement('h3'), { textContent: '參考答案與自評' }));
+  panel.appendChild(Object.assign(document.createElement('p'), { textContent: q.model }));
+  panel.appendChild(Object.assign(document.createElement('p'), { textContent: '這題以重點自評計分。逐項確認你的答案有表達以下意思；不需要逐字相同。全部勾選視為答對，否則依原規則扣5分。' }));
+  q.rubric.forEach(point => {
+    const label = document.createElement('label');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    label.append(checkbox, document.createTextNode(point));
+    panel.appendChild(label);
+  });
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'primary-btn';
+  button.textContent = '依勾選結果計分';
+  button.onclick = () => {
+    const allCorrect = [...panel.querySelectorAll('input')].every(input => input.checked);
+    panel.querySelectorAll('input, button').forEach(el => { el.disabled = true; });
+    finishQuestion(allCorrect, q.model);
+  };
+  panel.appendChild(button);
+  UI.text.appendChild(panel);
+  UI.feedback.classList.add('hidden');
+}
+
 // --- Validation Logic ---
 function validateAnswer() {
-  if (state.isBusy || state.answered) return;
+  if (state.isBusy || state.answered || scienceStudyMode()) return;
   
   const q = state.currentQuestions[state.currentIndex];
-  if (q.type !== "input" && q.type !== 'sentence') return;
+  if (q.type === 'explain') {
+    if (!UI.text.querySelector('.self-review')) revealExplanation(q);
+    return;
+  }
+  if (!['input', 'sentence', 'order'].includes(q.type)) return;
 
   const inputs = UI.text.querySelectorAll(".inline-input");
   let allCorrect = true;
@@ -260,15 +396,15 @@ function validateAnswer() {
 function submitChoice(choice) {
   if (state.isBusy || state.answered) return;
   const q = state.currentQuestions[state.currentIndex];
-  const isCorrect = choice.toLowerCase() === q.a[0].toLowerCase();
+  const isCorrect = answerMatches(choice, q.a[0]);
   
   const btns = UI.text.querySelectorAll(".choice-btn");
   btns.forEach(btn => {
     btn.disabled = true;
-    if (btn.innerText.includes(q.a[0])) {
+    if (answerMatches(btn.dataset.answer, q.a[0])) {
       btn.style.borderColor = "var(--accent)";
       btn.style.background = "rgba(16, 185, 129, 0.1)";
-    } else if (btn.innerText.includes(choice) && !isCorrect) {
+    } else if (btn.dataset.answer === choice && !isCorrect) {
       btn.style.borderColor = "#ef4444";
       btn.style.background = "rgba(239, 68, 68, 0.1)";
     }
@@ -395,7 +531,7 @@ function handleEndOfRound() {
 
 function handleReset() {
   if (confirm("Clear all your progress and achievements?")) {
-    localStorage.clear();
+    ['tm_score', 'tm_streak', 'tm_total', 'tm_correct'].forEach(key => localStorage.removeItem(key));
     state.score = 0;
     state.streak = 0;
     state.totalAnswered = 0;
@@ -406,6 +542,22 @@ function handleReset() {
 
 // --- Event Handlers ---
 function attachEventListeners() {
+  UI.subject.onchange = () => {
+    if (state.subject === 'english') state.englishSemester = state.semester;
+    state.subject = UI.subject.value;
+    state.semester = state.subject === 'science' ? 'current' : state.englishSemester;
+    UI.semester.value = state.semester;
+    const url = new URL(window.location.href);
+    if (state.subject === 'science') url.searchParams.set('subject', 'science');
+    else url.searchParams.delete('subject');
+    window.history.replaceState(null, '', url);
+    setupUnitOptions();
+    setupGame();
+  };
+  UI.scienceMode.onchange = () => {
+    state.scienceMode = UI.scienceMode.value;
+    setupGame();
+  };
   UI.submitBtn.onclick = validateAnswer;
   UI.nextBtn.onclick = () => {
     if (!state.answered) return;
@@ -432,7 +584,7 @@ function attachEventListeners() {
   };
 
   window.onkeydown = (e) => {
-    if (e.isComposing || e.repeat) return;
+    if (e.isComposing || e.repeat || scienceStudyMode() || UI.text.querySelector('.self-review:not(:has(button:disabled))')) return;
     const editing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName);
     if (e.target.tagName === 'SELECT') return;
     if ((e.key === 'Enter' || (!editing && e.key === 'n')) && !UI.nextBtn.classList.contains("hidden")) {
