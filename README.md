@@ -23,6 +23,12 @@ original content and links to the public curriculum samples and factual referenc
 
 - 60 bilingual scientific terms: English definitions, Chinese explanations,
   chapter filtering, term search, and hide/reveal for active recall.
+- 11 original colour illustrations with bilingual labels: reproductive organs,
+  placenta and cord, flower parts, pollination versus fertilisation, seed dispersal,
+  germination, non-flowering/vegetative reproduction, inheritance, acquired traits,
+  and family relationships. Galleries appear in glossary and review modes; each
+  term card links to a related diagram. A dialog supports zoom, scrolling and SVG
+  download. Definitions start collapsed to let learners begin with the images.
 - 16 bilingual review points across the three chapters.
 - 60 automatically checked definition-to-term questions.
 - 60 definition-writing prompts with model definitions for self-assessment.
