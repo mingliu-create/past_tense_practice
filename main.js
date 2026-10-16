@@ -10,7 +10,7 @@ const CURRICULA = {
     units: {
       mixed: '期中考綜合練習',
       tags: 'Week 1–2 附加問句',
-      phrasal: 'Week 3 片語動詞',
+      phrasal: 'Week 3 片語動詞・選擇題',
       degree: 'Week 4–5 too / enough 填充',
       combine: 'Week 4–5 too / enough 句子合併',
       present: 'Week 6–7 混合練習'

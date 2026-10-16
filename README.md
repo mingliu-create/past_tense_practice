@@ -56,7 +56,7 @@ The semester selector defaults to **這學期（期中考）**. The new bank in
 supplied Week 1–7 scope:
 
 - Week 1–2: 36 question-tag fill-in questions.
-- Week 3: 36 phrasal-verb fill-in questions, covering all 13 listed verbs and their meanings.
+- Week 3: 36 contextual phrasal-verb multiple-choice questions with four similar phrase options, covering all 13 listed verbs and their meanings.
 - Week 4–5: 30 too/enough fill-in questions and 32 full-sentence combinations.
 - Week 6–7: 64 mixed questions including verb forms, stative/action meanings,
   arrangements, timetables, and frequency-adverb placement.
