@@ -187,21 +187,17 @@ function updateQuestionDisplay() {
   UI.submitBtn.classList.remove("hidden");
   
   UI.category.innerText = `第 ${state.currentIndex + 1} / ${state.currentQuestions.length} 題`;
-  UI.currentTenseLabel.innerText = { sentence: '句子合併', choice: '選擇練習', input: '填充練習', order: '流程排序', explain: '簡答・對照自評' }[q.type];
+  UI.currentTenseLabel.innerText = { sentence: '句子合併', choice: '選擇題', truefalse: '是非題', input: '填充題' }[q.type];
   UI.instructions.textContent = q.type === 'sentence'
     ? `使用 ${q.keyword}，將下列兩句合併成一個完整句子。保留原意，沿用第一句的主詞；不要只填片段。`
     : '';
   UI.instructions.classList.toggle('hidden', q.type !== 'sentence');
 
-  if (q.type === 'explain') {
-    renderExplanationQuestion(q);
-  } else if (q.type === 'order') {
-    renderOrderQuestion(q);
-  } else if (q.type === 'sentence') {
+  if (q.type === 'sentence') {
     renderSentenceQuestion(q);
   } else if (q.type === "input") {
     renderInputQuestion(q);
-  } else if (q.type === "choice") {
+  } else if (q.type === "choice" || q.type === 'truefalse') {
     renderChoiceQuestion(q);
   }
   if (q.figure) {
@@ -236,8 +232,36 @@ function renderInputQuestion(q) {
   UI.text.innerHTML = questionHTML;
   
   const firstInput = UI.text.querySelector('input');
+  if (q.wordBox) renderWordBox(q);
   if (firstInput) firstInput.focus();
 
+}
+
+function renderWordBox(q) {
+  const inputs = [...UI.text.querySelectorAll('.inline-input')];
+  let activeInput = inputs[0];
+  inputs.forEach(input => input.addEventListener('focus', () => { activeInput = input; }));
+  const box = document.createElement('aside');
+  box.className = 'word-box';
+  box.setAttribute('aria-label', 'Word box');
+  box.appendChild(Object.assign(document.createElement('h3'), { textContent: 'Word box' }));
+  box.appendChild(Object.assign(document.createElement('p'), { textContent: '選字填空。也可以先點空格，再點詞語填入。' }));
+  const words = document.createElement('div');
+  words.className = 'word-box-options';
+  shuffleArray(q.wordBox).forEach(word => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.textContent = word;
+    button.onclick = () => {
+      if (state.answered) return;
+      activeInput.value = word;
+      const nextEmpty = inputs.find(input => !input.value.trim());
+      (nextEmpty || activeInput).focus();
+    };
+    words.appendChild(button);
+  });
+  box.appendChild(words);
+  UI.text.prepend(box);
 }
 
 function renderSentenceQuestion(q) {
@@ -272,14 +296,15 @@ function renderChoiceQuestion(q) {
   choiceGrid.setAttribute("role", "group");
   choiceGrid.setAttribute("aria-label", "Selection choices");
   
-  const shuffledChoices = shuffleArray(q.choices || []);
+  const shuffledChoices = q.type === 'truefalse' ? q.choices : shuffleArray(q.choices || []);
   state.activeChoices = shuffledChoices;
   
   shuffledChoices.forEach((choice, idx) => {
     const btn = document.createElement("button");
     btn.className = "choice-btn";
     btn.dataset.answer = choice;
-    btn.innerHTML = `<span class="choice-key">${idx + 1}</span> ${choice}`;
+    const label = q.type === 'truefalse' ? (choice === 'True' ? 'True / 對' : 'False / 錯') : choice;
+    btn.innerHTML = `<span class="choice-key">${idx + 1}</span> ${label}`;
     btn.setAttribute("aria-label", `Choice ${idx + 1}: ${choice}`);
     btn.onclick = () => submitChoice(choice);
     choiceGrid.appendChild(btn);
@@ -289,89 +314,12 @@ function renderChoiceQuestion(q) {
   UI.submitBtn.classList.add("hidden");
 }
 
-function renderOrderQuestion(q) {
-  UI.text.replaceChildren();
-  UI.text.appendChild(Object.assign(document.createElement('p'), { textContent: q.s }));
-  const options = shuffleArray(q.steps);
-  const bank = document.createElement('ol');
-  bank.className = 'order-bank';
-  bank.type = 'A';
-  options.forEach(text => bank.appendChild(Object.assign(document.createElement('li'), { textContent: text })));
-  UI.text.appendChild(bank);
-  const list = document.createElement('ol');
-  list.className = 'order-steps';
-  q.steps.forEach((_, i) => {
-    const li = document.createElement('li');
-    const select = document.createElement('select');
-    select.className = 'inline-input order-select';
-    select.setAttribute('aria-label', `Step ${i + 1}`);
-    select.appendChild(Object.assign(document.createElement('option'), { value: '', textContent: '選擇這一步驟…' }));
-    options.forEach((text, index) => select.appendChild(Object.assign(document.createElement('option'), { value: text, textContent: String.fromCharCode(65 + index) })));
-    li.appendChild(select);
-    list.appendChild(li);
-  });
-  UI.text.appendChild(list);
-}
-
-function renderExplanationQuestion(q) {
-  UI.text.replaceChildren();
-  UI.text.appendChild(Object.assign(document.createElement('p'), { textContent: q.s }));
-  const label = document.createElement('label');
-  label.className = 'sentence-answer-label';
-  label.textContent = '用自己的話解釋（可用英文或中文）';
-  const textarea = document.createElement('textarea');
-  textarea.className = 'inline-input sentence-input';
-  textarea.rows = 4;
-  textarea.setAttribute('aria-label', 'Your scientific explanation');
-  textarea.placeholder = '先寫下答案，再對照參考答案與重點…';
-  label.appendChild(textarea);
-  UI.text.appendChild(label);
-}
-
-function revealExplanation(q) {
-  const textarea = UI.text.querySelector('textarea');
-  if (!textarea.value.trim()) {
-    showFeedback('請先寫下你的解釋，再對照答案。', 'incomplete');
-    return;
-  }
-  textarea.disabled = true;
-  UI.submitBtn.classList.add('hidden');
-  const panel = document.createElement('section');
-  panel.className = 'self-review';
-  panel.appendChild(Object.assign(document.createElement('h3'), { textContent: '參考答案與自評' }));
-  panel.appendChild(Object.assign(document.createElement('p'), { textContent: q.model }));
-  panel.appendChild(Object.assign(document.createElement('p'), { textContent: '這題以重點自評計分。逐項確認你的答案有表達以下意思；不需要逐字相同。全部勾選視為答對，否則依原規則扣5分。' }));
-  q.rubric.forEach(point => {
-    const label = document.createElement('label');
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    label.append(checkbox, document.createTextNode(point));
-    panel.appendChild(label);
-  });
-  const button = document.createElement('button');
-  button.type = 'button';
-  button.className = 'primary-btn';
-  button.textContent = '依勾選結果計分';
-  button.onclick = () => {
-    const allCorrect = [...panel.querySelectorAll('input')].every(input => input.checked);
-    panel.querySelectorAll('input, button').forEach(el => { el.disabled = true; });
-    finishQuestion(allCorrect, q.model);
-  };
-  panel.appendChild(button);
-  UI.text.appendChild(panel);
-  UI.feedback.classList.add('hidden');
-}
-
 // --- Validation Logic ---
 function validateAnswer() {
   if (state.isBusy || state.answered || scienceStudyMode()) return;
   
   const q = state.currentQuestions[state.currentIndex];
-  if (q.type === 'explain') {
-    if (!UI.text.querySelector('.self-review')) revealExplanation(q);
-    return;
-  }
-  if (!['input', 'sentence', 'order'].includes(q.type)) return;
+  if (!['input', 'sentence'].includes(q.type)) return;
 
   const inputs = UI.text.querySelectorAll(".inline-input");
   let allCorrect = true;
@@ -390,6 +338,7 @@ function validateAnswer() {
     input.disabled = true;
   });
 
+  UI.text.querySelectorAll('.word-box button').forEach(button => { button.disabled = true; });
   finishQuestion(allCorrect, displayAnswers(q.a));
 }
 
@@ -584,7 +533,7 @@ function attachEventListeners() {
   };
 
   window.onkeydown = (e) => {
-    if (e.isComposing || e.repeat || scienceStudyMode() || UI.text.querySelector('.self-review:not(:has(button:disabled))')) return;
+    if (e.isComposing || e.repeat || scienceStudyMode()) return;
     const editing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(e.target.tagName);
     if (e.target.tagName === 'SELECT') return;
     if ((e.key === 'Enter' || (!editing && e.key === 'n')) && !UI.nextBtn.classList.contains("hidden")) {

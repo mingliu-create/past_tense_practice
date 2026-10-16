@@ -30,17 +30,17 @@ original content and links to the public curriculum samples and factual referenc
   term card links to a related diagram. A dialog supports zoom, scrolling and SVG
   download. Definitions start collapsed to let learners begin with the images.
 - 16 bilingual review points across the three chapters.
-- 60 automatically checked definition-to-term questions.
-- 60 definition-writing prompts with model definitions for self-assessment.
+- 60 automatically checked definition-to-term questions, each with a word box.
 - 81 original application questions: 25 human, 32 plant, 24 heredity.
-  Formats include fill-in, multiple choice, ordering, data tables, flower models,
-  family trees and short explanations.
+  Formats are 45 multiple-choice, 14 true/false and 22 fill-in questions.
+  Data tables, flower models and family trees support question interpretation.
 
 Choose all three chapters for mixed practice or select one chapter.
-Short explanations accept the learner’s own English or Chinese wording: submission
-reveals a model answer and a checklist. The learner then self-assesses the content
-and explicitly confirms scoring. These answers are not automatically judged by
-keyword matching. Other exercises use the existing automatic scoring engine.
+Choose mixed types or focus on multiple-choice, true/false or fill-in questions.
+Every Science fill-in question has a shuffled word box containing all required
+answers and distractors. Learners can type or click a word to fill the active blank.
+All questions use automatic scoring; there are no short-answer, self-assessment or
+ordering questions. Explanations are shown after answering.
 Reading and review modes do not change scores. Scores remain shared across subjects
 under the original local-storage keys; switching subjects preserves progress totals.
 

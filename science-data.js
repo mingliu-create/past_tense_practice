@@ -102,8 +102,7 @@ export const SCIENCE_SOURCES = [
 
 const fill = (s, a, explanation, extra = {}) => ({ type: 'input', s, a, explanation, ...extra });
 const choice = (s, correct, wrong, explanation, extra = {}) => ({ type: 'choice', s, a: [correct], choices: [correct, ...wrong], explanation, ...extra });
-const order = (s, steps, explanation, extra = {}) => ({ type: 'order', s, a: steps, steps, explanation, ...extra });
-const explain = (s, model, rubric, explanation, extra = {}) => ({ type: 'explain', s, model, rubric, explanation, ...extra });
+const truefalse = (s, correct, explanation, extra = {}) => ({ type: 'truefalse', s, a: [correct ? 'True' : 'False'], choices: ['True', 'False'], explanation, ...extra });
 
 // Original schematic diagrams/tables. They are learning models, not textbook artwork.
 export const SCIENCE_FIGURES = {
@@ -133,13 +132,13 @@ export const SCIENCE_BANK = {
     choice('Two separate eggs are fertilised by two separate sperm during one pregnancy. What can result?', 'Fraternal twins', ['Identical twins from one embryo', 'Asexual reproduction', 'Two babies with necessarily identical genetic information'], '異卵雙胞胎由兩次精卵結合形成，不保證外觀完全一樣。'),
     choice('A student says, “The baby eats the food in the mother’s stomach through a tube.” Which correction is accurate?', 'Nutrients are absorbed by the mother, exchanged at the placenta and carried to the baby.', ['The baby is connected directly to the mother’s stomach.', 'The ovary digests food for the baby.', 'The uterus makes all nutrients from air.'], '胎兒不與母親的胃直接相連。'),
     choice('Which statement about the placenta is accurate?', 'It permits exchange of substances without normally mixing maternal and fetal blood directly.', ['It is the organ that produces the mother’s eggs.', 'It replaces the baby’s entire body.', 'It makes fertilisation occur inside the stomach.'], '胎盤是物質交換處，母體和胎兒血液通常不直接混合。'),
-    order('Put these events in the order followed by an egg that is fertilised and develops into a baby.', ['An egg is released from an ovary.', 'Fertilisation occurs in an oviduct.', 'The early embryo implants in the uterine lining.', 'The developing baby grows in the uterus.', 'The baby is born.'], '這是成功受精並持續發育的例子；不是每顆排出的卵都會受精。'),
-    order('Order these stages from the beginning of development.', ['Sperm and egg-cell nuclei fuse.', 'A zygote forms.', 'An early embryo develops through cell division.', 'The fetal stage follows.', 'Birth occurs.'], '受精後先形成受精卵，再經分裂形成胚胎，之後進入胎兒階段。'),
-    order('Trace the direction of oxygen delivery in this simplified model.', ['Oxygen enters the mother’s blood through her lungs.', 'Oxygen is exchanged across the placenta.', 'Oxygen travels in fetal blood through the umbilical cord.', 'Oxygen reaches the developing baby’s cells.'], '區分母體吸收、胎盤交換和胎兒血液運送。'),
-    explain('Explain why the uterus and the ovary cannot be used as interchangeable labels in a reproductive-system diagram.', 'Egg cells develop in an ovary and can be released from it. An embryo implants in the uterine lining, and the baby develops in the uterus.', ['卵細胞在卵巢中發育／由卵巢排出。', '胚胎著床及胎兒成長的地方是子宮。'], '寫出兩者不同的功能，不能只說都是女性器官。'),
-    explain('Why is menstruation not the same as fertilisation?', 'Menstruation is the shedding of the uterine lining. Fertilisation is the fusion of sperm-cell and egg-cell nuclei.', ['月經涉及子宮內膜脫落及血液排出。', '受精涉及精卵細胞核融合。'], '要比較兩個過程，而非只列發生的時間。'),
-    explain('A student believes reproduction and growth mean the same thing. Explain the difference using a human example.', 'Growth is an existing child getting larger and developing. Reproduction produces a new individual, such as a baby.', ['成長是原有個體長大、發育。', '生殖是產生新個體。'], '能以嬰兒出生和孩子長大區分即可，不要求逐字相同。'),
-    explain('Explain how a fetus receives oxygen without breathing air through its own lungs before birth.', 'Oxygen is exchanged from the mother’s blood across the placenta. It is then carried in fetal blood through the umbilical cord to the fetus.', ['指出胎盤是氧氣交換處。', '指出臍帶血管把氧氣運到胎兒。'], '不要說胎兒直接呼吸母親肚子裡的空氣。')
+    choice('Which event normally happens after fertilisation but before birth?', 'An embryo implants in the uterine lining.', ['The same egg is first released from an ovary.', 'The baby begins attending school.', 'The uterus produces sperm.'], '成功受精後，早期胚胎在子宮內膜著床，再繼續發育。'),
+    choice('Which sequence correctly shows early development?', 'Fertilisation → zygote → embryo', ['Embryo → sperm → ovulation', 'Birth → fertilisation → zygote', 'Zygote → egg release → sperm production'], '精卵細胞核融合形成受精卵，再分裂發育成胚胎。'),
+    choice('Where does oxygen exchange between the mother and her developing baby take place?', 'At the placenta', ['Inside the mother’s stomach', 'Inside a sperm duct', 'At the baby’s mouth as it breathes outside air'], '氧氣在胎盤交換，再由胎兒血液經臍帶運送。'),
+    truefalse('The ovary and the uterus perform the same role: both are places where a baby normally grows.', false, '卵細胞在卵巢發育；胚胎在子宮著床，胎兒在子宮成長。'),
+    truefalse('Menstruation and fertilisation are different processes.', true, '月經是子宮內膜脫落；受精是精卵細胞核融合。'),
+    truefalse('A child growing taller is an example of reproduction.', false, '長高是原有個體成長；生殖會產生新個體。'),
+    truefalse('Before birth, oxygen can reach the fetus through the placenta and umbilical cord.', true, '胎盤交換氧氣，臍帶內的血管把氧氣運至胎兒。')
   ],
   plants: [
     fill('Pollen grains are produced by the ______ and are received by the ______.', ['anther', 'stigma'], '花藥產生，柱頭接收。'),
@@ -166,14 +165,14 @@ export const SCIENCE_BANK = {
     choice('Which two setups isolate the effect of water most fairly?', 'A and B', ['A and D', 'B and C', 'C and D'], 'A與B的氧氣、溫度相同，主要差別是水。', { figure: 'germination' }),
     choice('Why did the seeds in setup C probably fail to germinate?', 'Oxygen was excluded.', ['They had no water.', 'They had a temperature of 4°C.', 'They all needed a human parent.'], '表中C有水且25°C，但沒有氧氣。', { figure: 'germination' }),
     choice('What do the results for setup A show?', 'Most, but not all, of these seeds germinated under the tested conditions.', ['Suitable conditions guarantee 100% germination.', 'Water prevents germination.', 'The experiment proved that all plant species need light.'], 'A有8/10萌發，並非全部。實驗也沒有測試光照。', { figure: 'germination' }),
-    order('Arrange the main events in the sexual reproduction of a tomato plant.', ['Pollen reaches a suitable stigma.', 'A male reproductive cell reaches an egg cell and fertilisation occurs.', 'Seeds and a fruit develop.', 'Seeds are dispersed.', 'A seed germinates when conditions are suitable.'], '花粉轉移、受精、種果形成、散播、萌發是不同步驟。'),
-    order('Order the early growth of a bean seed.', ['The seed absorbs water.', 'The seed coat splits as growth begins.', 'The first root emerges.', 'The shoot grows upwards and leaves unfold.'], '根先向外長出，後續幼苗的葉可進行光合作用。'),
-    order('Trace the simplified route that allows a male reproductive cell to reach an ovule.', ['Pollen lands on a stigma.', 'A pollen tube grows through the style.', 'A male reproductive cell reaches the ovule.', 'Male and egg-cell nuclei fuse.'], '花粉本身落在柱頭，生殖細胞藉花粉管到達胚珠。'),
-    explain('Why are pollination and fertilisation not the same process?', 'Pollination transfers pollen from an anther to a stigma. Fertilisation is the fusion of a male reproductive-cell nucleus with an egg-cell nucleus.', ['授粉是花粉由花藥移至柱頭。', '受精是雄性生殖細胞核與卵細胞核融合。'], '要同時定義兩者，不能只說其中一個先發生。'),
-    explain('Explain two ways seed dispersal can benefit young plants.', 'Dispersal reduces competition with the parent and other seedlings for light, water, space and minerals. It also allows seeds to reach new places where they may grow.', ['指出散播可減少對資源的競爭，並舉一種資源。', '指出可到新地方生長，但不保證存活。'], '可用合理的等義描述。'),
-    explain('Use setups A and D to explain what this experiment suggests about temperature.', 'The setups have the same water and oxygen conditions, but differ in temperature. Seeds germinated at 25°C but not at 4°C in five days, suggesting temperature affected germination under these conditions.', ['指出A與D的水和氧氣條件相同，溫度不同。', '比較8/10與0/10的結果，提出溫度影響萌發的結論。', '結論限於這些種子及觀察時間，不能推論所有植物都需25°C。'], '把證據和結論連起來。', { figure: 'germination' }),
-    explain('A student says, “All non-flowering plants reproduce by spores.” Correct the statement with two examples.', 'Some non-flowering plants, such as ferns, produce spores. Others, such as pine trees, produce seeds in cones.', ['以蕨類或蘚苔作為孢子繁殖的例子。', '以松樹等球果植物作為無花但有種子的反例。'], '不要把無花植物視為完全相同的一群。'),
-    explain('Why can a seed germinate on moist cotton even though a green seedling later needs light?', 'The seed initially uses stored food for growth. After leaves develop, light enables photosynthesis to make food for continued growth.', ['種子早期可使用儲存的養分。', '長出綠葉後，光可支持光合作用及持續生長。'], '萌發的基本條件與幼苗後續生長條件要區分。')
+    choice('Which sequence can lead from a flower to a new tomato seedling?', 'Pollination → fertilisation → seed development → germination', ['Germination → pollination → egg production in a human', 'Seed dispersal → formation of the same seed → pollination', 'Fruit development → formation of the same flower → fertilisation'], '授粉後可發生受精，種子發育形成，之後在適當條件下萌發。'),
+    choice('After the seed coat splits during bean germination, which structure normally emerges first?', 'The first root', ['A ripe fruit', 'A flower with petals', 'A cone full of seeds'], '根先長出，可幫助吸水和固定幼苗。'),
+    choice('Which structure grows through the style after suitable pollen lands on a stigma?', 'A pollen tube', ['A seed coat', 'A human oviduct', 'A fruit stalk that carries blood'], '花粉管可讓雄性生殖細胞到達胚珠。'),
+    truefalse('Moving pollen to a stigma is the same event as the fusion of reproductive-cell nuclei.', false, '花粉轉移是授粉；細胞核融合才是受精。'),
+    truefalse('Seed dispersal can reduce competition with a parent plant for water, light and space.', true, '散播使種子分散，也可能到達新的生長地點。'),
+    truefalse('Setups A and D have the same water and oxygen conditions, but different temperatures.', true, '表格顯示A為25°C、D為4°C，水和氧氣條件相同。', { figure: 'germination' }),
+    truefalse('All non-flowering plants reproduce only by spores.', false, '蕨類會產生孢子，但松樹以球果內的種子繁殖。'),
+    truefalse('A seed can use stored food during early germination before it has working green leaves.', true, '早期生長使用儲存養分；長出綠葉後可透過光合作用製造養分。')
   ],
   heredity: [
     fill('The passing of biological characteristics from parents to offspring is called ______.', [['heredity', 'inheritance']], '遺傳是親代與後代間的特徵傳遞。'),
@@ -194,12 +193,12 @@ export const SCIENCE_BANK = {
     choice('How many generations are represented in this family chart?', 'Three', ['One', 'Two', 'Five'], '祖父母、父母與孩子，共三代。', { figure: 'family' }),
     choice('Who is Gus’s sibling in the chart?', 'Fay', ['Ian', 'Ben', 'Hana'], 'Fay與Gus有相同的兩位父母。', { figure: 'family' }),
     choice('Two plants of the same variety are grown with different amounts of light and grow to different heights. What should we consider?', 'Environmental conditions may affect their growth.', ['The shorter plant must be a different species.', 'Only genes can ever affect height.', 'Plants cannot inherit any characteristics.'], '實驗改變了環境；不能只用遺傳解釋結果。'),
-    order('Read the direct line of descent from this grandparent to this grandchild.', ['Ada', 'Cara', 'Fay'], 'Ada是Cara的親代，Cara是Fay的親代。', { figure: 'family' }),
-    explain('Explain why a child can resemble both parents without being identical to either one.', 'The child receives genetic information from both parents. The combination can differ from each parent’s combination, so some features are similar while others differ.', ['指出遺傳資訊來自雙方親代。', '指出組合不同，因此相似不等於完全相同。'], '不是「一半身體像媽媽、另一半像爸爸」的機械拼接。'),
-    explain('A father learns to juggle and later has a child. Explain why the child still needs practice to juggle.', 'Juggling is a learned skill acquired through experience. The father’s learned skill is not directly passed to the child through genetic information.', ['把雜耍辨認為後天學習的技能。', '說明學會的技能不會直接以遺傳資訊傳下，孩子仍需學習。'], '不要推論父母的所有能力都能直接遺傳。'),
-    explain('Why can a family photograph alone not tell you every inherited characteristic of the people shown?', 'Some inherited characteristics are not visible in appearance, such as blood group. A photograph only shows some observable features.', ['指出有些遺傳特徵不可由外表看出。', '提供合理例子，例如血型。'], '觀察外表只能取得部分資訊。'),
-    explain('Explain how inherited information and the environment can both influence a person’s height.', 'Inherited information affects growth potential. Environmental factors such as nutrition can influence how a person grows, so height is not determined by one factor alone.', ['指出遺傳資訊對身高有影響。', '指出營養等環境因素也可影響成長。'], '不需要討論進階遺傳比例或孟德爾機率。'),
-    explain('Use the chart to explain why Fay and Ian are cousins rather than siblings.', 'Fay’s parent Cara and Ian’s parent Dan are siblings. Fay and Ian have different parents but share grandparents Ada and Ben.', ['辨認Cara與Dan是手足。', '指出Fay與Ian父母不同但共有祖父母。'], '根據連線關係作答，不根據名字的左右位置。', { figure: 'family' })
+    choice('Which line correctly traces a grandparent, a parent and a child?', 'Ada → Cara → Fay', ['Fay → Ada → Cara', 'Dan → Eli → Ben', 'Ian → Gus → Hana'], '沿親子連線可由Ada到Cara，再到Fay。', { figure: 'family' }),
+    truefalse('In sexual reproduction, a child can resemble both parents without being identical to either one.', true, '雙方的遺傳資訊組合可形成與親代不同的新組合。'),
+    truefalse('If a father learns to juggle, his child automatically inherits the learned juggling skill.', false, '雜耍是後天學習的技能，孩子仍需要學習和練習。'),
+    truefalse('A family photograph reveals every inherited characteristic, including blood group.', false, '血型等遺傳特徵不能只靠外表觀察。'),
+    truefalse('Both inherited information and nutrition can influence a person’s height.', true, '身高可同時受遺傳與環境因素影響。'),
+    truefalse('Fay and Ian are siblings because they share grandparents.', false, '他們的父母Cara與Dan是手足，因此Fay和Ian是cousins，不是siblings。', { figure: 'family' })
   ]
 };
 
@@ -211,8 +210,21 @@ export function scienceQuestions(chapter, mode) {
   const chapters = chapter === 'mixed' ? Object.keys(SCIENCE_CHAPTERS) : [chapter];
   return chapters.flatMap(key => {
     const terms = SCIENCE_CHAPTERS[key].terms;
-    if (mode === 'terms') return terms.map((t, i) => fill(`Name the scientific term: ${t.definition}<br>______`, [[t.name, ...t.aliases]], `${t.name}（${t.chinese}）：${t.meaning}`, { id: `term-${key}-${i}` }));
-    if (mode === 'define') return terms.map((t, i) => explain(`Explain the meaning of “${t.name}”.`, t.definition, [t.meaning], `${t.name}（${t.chinese}）`, { id: `definition-${key}-${i}` }));
-    return SCIENCE_BANK[key];
+    const questions = mode === 'terms'
+      ? terms.map((t, i) => fill(`Name the scientific term: ${t.definition}<br>______`, [[t.name, ...t.aliases]], `${t.name}（${t.chinese}）：${t.meaning}`, { id: `term-${key}-${i}` }))
+      : SCIENCE_BANK[key].filter(q => !['choice', 'truefalse', 'fill'].includes(mode) || q.type === (mode === 'fill' ? 'input' : mode));
+    return questions.map(q => q.type === 'input' ? { ...q, wordBox: makeWordBox(q, terms) } : q);
   });
+}
+
+function makeWordBox(question, terms) {
+  const answers = question.a.map(answer => Array.isArray(answer) ? answer[0] : answer);
+  const stem = text => text.toLowerCase().replace(/^(an?|the) /, '').replace(/s$/, '');
+  const accepted = new Set(question.a.flat().map(stem));
+  if (accepted.has('both')) return [...answers, 'one', 'neither', 'three', 'four', 'five'];
+  const distractors = terms.map(t => t.name).filter(name => !accepted.has(stem(name)));
+  // Vary distractors across questions; display order is independently shuffled in the UI.
+  const offset = [...String(question.id)].reduce((sum, letter) => sum + letter.charCodeAt(0), 0) % distractors.length;
+  const rotated = [...distractors.slice(offset), ...distractors.slice(0, offset)];
+  return [...new Set([...answers, ...rotated.slice(0, Math.max(3, 6 - answers.length))])];
 }
