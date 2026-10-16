@@ -52,16 +52,16 @@ complex human traits as universally simple single-gene inheritance.
 ## Semester Practice
 
 The semester selector defaults to **這學期（期中考）**. The new bank in
-`midterm-bank.js` contains 198 individually written questions based on the
+`midterm-bank.js` contains 220 individually written questions based on the
 supplied Week 1–7 scope:
 
-- Week 1–2: 36 question-tag fill-in questions.
+- Week 1–2: 48 question-tag fill-in questions, covering the supplied negative words and special tag rules.
 - Week 3: 36 contextual phrasal-verb multiple-choice questions with four similar phrase options, covering all 13 listed verbs and their meanings.
-- Week 4–5: 30 too/enough fill-in questions and 32 full-sentence combinations.
+- Week 4–5: 36 too/enough fill-in questions and 36 full-sentence combinations, covering adjective/adverb/noun placement, for + person/thing, to-infinitives and negative enough patterns.
 - Week 6–7: 64 mixed questions including verb forms, stative/action meanings,
   arrangements, timetables, and frequency-adverb placement.
 
-The current-semester combined practice mixes all 198 questions. The
+The current-semester combined practice mixes all 220 questions. The
 previous-semester selector retains the original 5,000-question JSON bank and its
 practice groups. Per-question headings show the question number and exercise
 format without revealing the tense.

@@ -1,52 +1,453 @@
 // Individually authored from the supplied Week 1–7 scope; no name/verb substitution templates.
 const choice = (s, answer, distractors, explanation) => ({ type: 'choice', s, a: [answer], choices: [answer, ...distractors], explanation });
 const fill = (s, a, explanation) => ({ type: 'input', s, a, explanation });
-const combine = (first, second, word, answer, alternatives = []) => ({
-  type: 'sentence', sentences: [first, second], keyword: word,
-  a: [[answer, ...alternatives]],
-  explanation: word === 'too'
-    ? '保留「程度過高而無法做到」的原意；注意 to 後用原形動詞，必要時加入 for + 對象。'
-    : '保留足夠／不足以做到的原意；enough 放在形容詞或副詞後、名詞前。'
-});
 
 export const MIDTERM_BANK = {
   tags: [
-    fill('The library closes at six on Fridays, ______?', ["doesn't it"], '主句為肯定，附加問句用否定；library 用 it。'),
-    fill('You did not leave your keys in the taxi, ______?', ['did you'], '否定主句接肯定問句，沿用 did。'),
-    fill('The students are waiting outside the laboratory, ______?', ["aren't they"], '沿用 are，students 用 they。'),
-    fill('This is the receipt we need for the refund, ______?', ["isn't it"], 'This 在附加問句中用 it。'),
-    fill('There are no clean cups left in the cupboard, ______?', ['are there'], 'no 使主句為否定；there 保留。'),
-    fill('Nobody has reported a missing suitcase, ______?', ['have they'], 'Nobody 帶否定意思，問句用肯定；指人用 they，配合 have。'),
-    fill('I am next in the queue, ______?', ["aren't I"], 'I am 的否定附加問句為 aren’t I。'),
-    fill('I am not blocking the emergency exit, ______?', ['am I'], 'I am not 接 am I。'),
-    fill('Please pass me the clean towel, ______?', [["will you", "won't you"]], '肯定祈使句可用 will you 或 won’t you。'),
-    fill('Do not feed the animals through the fence, ______?', ['will you'], '否定祈使句接 will you。'),
-    fill('Let us take a break before the next rehearsal, ______?', ['shall we'], 'Let us 提議大家一起做事，接 shall we。'),
-    fill('Let me carry that bag upstairs for you, ______?', [["will you", "won't you"]], 'Let me 並非 Let’s，這裡接 will you 或 won’t you。'),
-    fill('Your brother has a spare bicycle, ______?', ["doesn't he"], 'has 在此表示擁有，當一般動詞，問句用 does。'),
-    fill('Your sister has got a new passport, ______?', ["hasn't she"], 'has got 的附加問句沿用 has。'),
-    fill('The visitors have already signed in at reception, ______?', ["haven't they"], '沿用助動詞 have；visitors 用 they。'),
-    fill('The technician, Mr Lee, had checked the alarm before we arrived, ______?', ["hadn't he"], '沿用 had；Mr Lee 用 he。'),
-    fill('The children can reach the light switch now, ______?', ["can't they"], '沿用 can，改成否定。'),
-    fill('You will send the application before midnight, ______?', ["won't you"], '沿用 will，改成否定。'),
-    fill('The replacement parts were not included in the box, ______?', ['were they'], '否定主句接肯定 were they。'),
-    fill('Nothing is plugged into that socket, ______?', ['is it'], 'Nothing 帶否定意思，指物用 it。'),
-    fill('Someone left a coat in the meeting room, ______?', ["didn't they"], 'Someone 指人，在附加問句用 they；left 對應 did。'),
-    fill('Everyone understands the evacuation plan, ______?', ["don't they"], 'Everyone 在問句用 they，因此搭配 do。'),
-    fill('The night guard, Mr Chen, never leaves this door unlocked, ______?', ['does he'], 'never 帶否定意思；Mr Chen 用 he，搭配 does。'),
-    fill('You hardly ever eat breakfast before school, ______?', ['do you'], 'hardly ever 帶否定意思，問句用肯定。'),
-    fill('The lift seldom stops on this floor, ______?', ['does it'], 'seldom 帶否定意思，問句用肯定 does。'),
-    fill('None of this advice is useful for our problem, ______?', ['is it'], 'None 帶否定意思；advice 為不可數名詞，用 it。'),
-    fill('There was a power cut during the concert, ______?', ["wasn't there"], 'There was 的問句沿用 was 和 there。'),
-    fill('These are the forms for the school trip, ______?', ["aren't they"], 'These 在問句用 they。'),
-    fill('Your daughter needs a quieter place to study, ______?', ["doesn't she"], 'needs 為一般動詞，不直接用 need 作附加問句。'),
-    fill('Your son dared to speak against the proposal, ______?', ["didn't he"], 'dared 在這裡是一般動詞，附加問句用 did。'),
-    fill('The roof was repaired last summer, ______?', ["wasn't it"], '沿用 was；roof 用 it。'),
-    fill('You should not share your password with anyone, ______?', ['should you'], '否定主句接肯定 should you。'),
-    fill('The twins do not attend the same school, ______?', ['do they'], '否定主句接肯定；twins 用 they。'),
-    fill('No one was hurt when the shelf fell, ______?', ['were they'], 'No one 帶否定意思，問句用 they 並搭配 were。'),
-    fill('Our coach, Ms Lin, is not coming to the match today, ______?', ['is she'], '否定主句接肯定；Ms Lin 用 she。'),
-    fill('You have never used this printer before, ______?', ['have you'], 'never 帶否定意思，沿用 have 並用肯定問句。')
+    {
+      "type": "input",
+      "s": "The spare batteries are in the top drawer, ______?",
+      "a": [
+        "aren't they"
+      ],
+      "explanation": "主句用 are；batteries 是複數，用 they，肯定接否定。",
+      "scope": "be-positive"
+    },
+    {
+      "type": "input",
+      "s": "The aquarium is not open on Mondays, ______?",
+      "a": [
+        "is it"
+      ],
+      "explanation": "主句是否定的 is not，附加問句用 is it。",
+      "scope": "be-negative"
+    },
+    {
+      "type": "input",
+      "s": "The parcel was delivered to the wrong address, ______?",
+      "a": [
+        "wasn't it"
+      ],
+      "explanation": "沿用 was；parcel 用 it。",
+      "scope": "past-be"
+    },
+    {
+      "type": "input",
+      "s": "The players were not ready when the whistle blew, ______?",
+      "a": [
+        "were they"
+      ],
+      "explanation": "沿用主句 were，否定接肯定；players 用 they。",
+      "scope": "past-be-negative"
+    },
+    {
+      "type": "input",
+      "s": "Your brother repairs bicycles at the weekend, ______?",
+      "a": [
+        "doesn't he"
+      ],
+      "explanation": "repairs 是一般動詞的第三人稱單數，用 doesn’t；brother 用 he。",
+      "scope": "simple-present"
+    },
+    {
+      "type": "input",
+      "s": "The ferry does not stop at this island, ______?",
+      "a": [
+        "does it"
+      ],
+      "explanation": "主句用 does not，附加問句用 does it。",
+      "scope": "simple-present-negative"
+    },
+    {
+      "type": "input",
+      "s": "We packed the first-aid kit before leaving, ______?",
+      "a": [
+        "didn't we"
+      ],
+      "explanation": "packed 是過去式，附加問句用 did，主詞維持 we。",
+      "scope": "simple-past"
+    },
+    {
+      "type": "input",
+      "s": "The visitors did not touch the paintings, ______?",
+      "a": [
+        "did they"
+      ],
+      "explanation": "主句用 did not，附加問句用 did they。",
+      "scope": "simple-past-negative"
+    },
+    {
+      "type": "input",
+      "s": "You are checking the departure board, ______?",
+      "a": [
+        "aren't you"
+      ],
+      "explanation": "沿用 are；肯定接否定，主詞維持 you。",
+      "scope": "continuous"
+    },
+    {
+      "type": "input",
+      "s": "The clock is not working properly, ______?",
+      "a": [
+        "is it"
+      ],
+      "explanation": "沿用 is；否定接肯定，clock 用 it。",
+      "scope": "continuous-negative"
+    },
+    {
+      "type": "input",
+      "s": "The builders have finished the new footbridge, ______?",
+      "a": [
+        "haven't they"
+      ],
+      "explanation": "have finished 的助動詞是 have；builders 用 they。",
+      "scope": "perfect"
+    },
+    {
+      "type": "input",
+      "s": "The guide, Ms Wong, has not counted all the tickets, ______?",
+      "a": [
+        "has she"
+      ],
+      "explanation": "這裡的 guide 指女性；has not counted 的附加問句沿用 has。",
+      "scope": "perfect-negative"
+    },
+    {
+      "type": "input",
+      "s": "The driver, Mr Lim, had checked the mirrors before reversing, ______?",
+      "a": [
+        "hadn't he"
+      ],
+      "explanation": "這裡的 driver 指男性；沿用 had checked 的 had。",
+      "scope": "past-perfect"
+    },
+    {
+      "type": "input",
+      "s": "The children can swim without their floats, ______?",
+      "a": [
+        "can't they"
+      ],
+      "explanation": "沿用情態動詞 can；children 用 they。",
+      "scope": "modal-can"
+    },
+    {
+      "type": "input",
+      "s": "You could not hear the announcement, ______?",
+      "a": [
+        "could you"
+      ],
+      "explanation": "could not 是否定，附加問句用 could you。",
+      "scope": "modal-could"
+    },
+    {
+      "type": "input",
+      "s": "The caretaker, Mr Tan, will lock the gate at sunset, ______?",
+      "a": [
+        "won't he"
+      ],
+      "explanation": "這裡的 caretaker 指男性；will 的否定縮寫是 won’t。",
+      "scope": "modal-will"
+    },
+    {
+      "type": "input",
+      "s": "We should leave a path clear for wheelchairs, ______?",
+      "a": [
+        "shouldn't we"
+      ],
+      "explanation": "沿用 should，肯定接否定。",
+      "scope": "modal-should"
+    },
+    {
+      "type": "input",
+      "s": "Passengers must not lean against these doors, ______?",
+      "a": [
+        "must they"
+      ],
+      "explanation": "沿用 must，否定接肯定；passengers 用 they。",
+      "scope": "modal-must"
+    },
+    {
+      "type": "input",
+      "s": "You would prefer a seat near the aisle, ______?",
+      "a": [
+        "wouldn't you"
+      ],
+      "explanation": "沿用 would，肯定接否定。",
+      "scope": "modal-would"
+    },
+    {
+      "type": "input",
+      "s": "I am responsible for returning the library books, ______?",
+      "a": [
+        "aren't I"
+      ],
+      "explanation": "I am 的肯定主句，附加問句特別用 aren’t I。",
+      "scope": "i-am"
+    },
+    {
+      "type": "input",
+      "s": "I am not standing in your way, ______?",
+      "a": [
+        "am I"
+      ],
+      "explanation": "I am not 的附加問句用 am I。",
+      "scope": "i-am-not"
+    },
+    {
+      "type": "input",
+      "s": "Please leave the wet umbrellas outside, ______?",
+      "a": [
+        [
+          "will you",
+          "won't you"
+        ]
+      ],
+      "explanation": "肯定祈使句可接 will you 或 won’t you。",
+      "scope": "imperative"
+    },
+    {
+      "type": "input",
+      "s": "Keep this receipt until the refund arrives, ______?",
+      "a": [
+        [
+          "will you",
+          "won't you"
+        ]
+      ],
+      "explanation": "祈使句省略主詞 you，可接 will you 或 won’t you。",
+      "scope": "imperative"
+    },
+    {
+      "type": "input",
+      "s": "Do not remove the labels from the jars, ______?",
+      "a": [
+        "will you"
+      ],
+      "explanation": "否定祈使句用 will you。",
+      "scope": "negative-imperative"
+    },
+    {
+      "type": "input",
+      "s": "Let's compare our measurements before handing in the report, ______?",
+      "a": [
+        "shall we"
+      ],
+      "explanation": "Let’s 表示共同提議，附加問句用 shall we。",
+      "scope": "lets"
+    },
+    {
+      "type": "input",
+      "s": "Let me hold the ladder while you climb, ______?",
+      "a": [
+        [
+          "will you",
+          "won't you"
+        ]
+      ],
+      "explanation": "Let me 是請對方允許或接受協助，接 will you／won’t you。",
+      "scope": "let-me"
+    },
+    {
+      "type": "input",
+      "s": "Let him explain why the alarm went off, ______?",
+      "a": [
+        [
+          "will you",
+          "won't you"
+        ]
+      ],
+      "explanation": "Let him 不等於 Let’s，接 will you／won’t you。",
+      "scope": "let-him"
+    },
+    {
+      "type": "input",
+      "s": "You have a torch in your backpack, ______?",
+      "a": [
+        "don't you"
+      ],
+      "explanation": "have 表示擁有，依講義的一般動詞用法，用 do。",
+      "scope": "have"
+    },
+    {
+      "type": "input",
+      "s": "The twins have got matching raincoats, ______?",
+      "a": [
+        "haven't they"
+      ],
+      "explanation": "have got 表示擁有，附加問句沿用 have。",
+      "scope": "have-got"
+    },
+    {
+      "type": "input",
+      "s": "There is a spare key under the flowerpot, ______?",
+      "a": [
+        "isn't there"
+      ],
+      "explanation": "There is 的附加問句保留 there，肯定接否定。",
+      "scope": "there-positive"
+    },
+    {
+      "type": "input",
+      "s": "There are not any dry towels left, ______?",
+      "a": [
+        "are there"
+      ],
+      "explanation": "There are not 的附加問句是 are there。",
+      "scope": "there-negative"
+    },
+    {
+      "type": "input",
+      "s": "This is the entrance shown on our map, ______?",
+      "a": [
+        "isn't it"
+      ],
+      "explanation": "This 在附加問句中改用 it。",
+      "scope": "this"
+    },
+    {
+      "type": "input",
+      "s": "That was the last bus to the village, ______?",
+      "a": [
+        "wasn't it"
+      ],
+      "explanation": "That 改用 it，並沿用 was。",
+      "scope": "that"
+    },
+    {
+      "type": "input",
+      "s": "Everyone has handed in a permission slip, ______?",
+      "a": [
+        "haven't they"
+      ],
+      "explanation": "Everyone 指人，附加問句用 they；配合 they 用 have。",
+      "scope": "everyone"
+    },
+    {
+      "type": "input",
+      "s": "Someone is waiting beside the ticket machine, ______?",
+      "a": [
+        "aren't they"
+      ],
+      "explanation": "Someone 指人，用 they；is 配合 they 改用 are。",
+      "scope": "someone"
+    },
+    {
+      "type": "input",
+      "s": "Anyone can join the lunchtime chess club, ______?",
+      "a": [
+        "can't they"
+      ],
+      "explanation": "Anyone 在附加問句中用 they，沿用 can。",
+      "scope": "anyone"
+    },
+    {
+      "type": "input",
+      "s": "No one was injured when the ceiling tile fell, ______?",
+      "a": [
+        "were they"
+      ],
+      "explanation": "No one 含否定意思，用肯定問句；指人用 they，配合 were。",
+      "scope": "no-one"
+    },
+    {
+      "type": "input",
+      "s": "Nobody remembered to switch off the projector, ______?",
+      "a": [
+        "did they"
+      ],
+      "explanation": "Nobody 含否定意思；remembered 是過去式，用 did they。",
+      "scope": "nobody"
+    },
+    {
+      "type": "input",
+      "s": "Nothing has changed since our last visit, ______?",
+      "a": [
+        "has it"
+      ],
+      "explanation": "Nothing 含否定意思，指事物用 it；沿用 has。",
+      "scope": "nothing"
+    },
+    {
+      "type": "input",
+      "s": "Neither of the twins can reach the top shelf, ______?",
+      "a": [
+        "can they"
+      ],
+      "explanation": "Neither 含否定意思，問句用肯定；指兩位雙胞胎用 they，沿用 can。",
+      "scope": "neither"
+    },
+    {
+      "type": "input",
+      "s": "There is no drinking water at the campsite, ______?",
+      "a": [
+        "is there"
+      ],
+      "explanation": "no 使主句帶否定意思，因此用肯定的 is there。",
+      "scope": "no"
+    },
+    {
+      "type": "input",
+      "s": "None of this equipment needs batteries, ______?",
+      "a": [
+        "does it"
+      ],
+      "explanation": "None 含否定意思；equipment 不可數，用 it；needs 用 does。",
+      "scope": "none"
+    },
+    {
+      "type": "input",
+      "s": "You could scarcely see the path in the fog, ______?",
+      "a": [
+        "could you"
+      ],
+      "explanation": "scarcely 表示幾乎不能，附加問句用肯定的 could you。",
+      "scope": "scarcely"
+    },
+    {
+      "type": "input",
+      "s": "The neighbours hardly ever use their balcony, ______?",
+      "a": [
+        "do they"
+      ],
+      "explanation": "hardly ever 含否定意思；use 用 do，neighbours 用 they。",
+      "scope": "hardly-ever"
+    },
+    {
+      "type": "input",
+      "s": "The lift never stops between floors, ______?",
+      "a": [
+        "does it"
+      ],
+      "explanation": "never 含否定意思；stops 用 does，lift 用 it。",
+      "scope": "never"
+    },
+    {
+      "type": "input",
+      "s": "We seldom eat out during the school week, ______?",
+      "a": [
+        "do we"
+      ],
+      "explanation": "seldom 含否定意思，所以用肯定的 do we。",
+      "scope": "seldom"
+    },
+    {
+      "type": "input",
+      "s": "Your sister needs to renew her bus pass, ______?",
+      "a": [
+        "doesn't she"
+      ],
+      "explanation": "need 在此是一般動詞，needs 的附加問句用 doesn’t she。",
+      "scope": "need"
+    },
+    {
+      "type": "input",
+      "s": "The youngest climber, Amy, dared to cross the rope bridge, ______?",
+      "a": [
+        "didn't she"
+      ],
+      "explanation": "這裡的 climber 指女性；dared 是一般動詞過去式，用 didn’t she。",
+      "scope": "dare"
+    }
   ],
   phrasal: [
     choice("The freezer stopped working overnight. It ______, and all the ice cream melted.", "broke down", ["broke off","broke out","broke up"], 'break down：機器故障。'),
@@ -87,70 +488,875 @@ export const MIDTERM_BANK = {
     choice("The organisers ______ the race yesterday because the track was flooded.", "called off", ["called for","called on","called in"], 'yesterday 表示過去；call off 為取消。')
   ],
   degree: [
-    fill('The soup has just come off the stove. It is ______ to drink safely. (hot)', ['too hot'], '熱到無法安全飲用，用 too hot。'),
-    fill('The shelf is two metres above the floor. It is ______ for the little child to reach. (high)', ['too high'], '高度過高導致無法碰到。'),
-    fill('The bridge can support five tonnes, and this van weighs only two. The bridge is ______ for the van. (strong)', ['strong enough'], '強度足夠，enough 放在形容詞後。'),
-    fill('We need four chairs and have six. We have ______ for all the guests. (chairs)', ['enough chairs'], 'enough 放在名詞前。'),
-    fill('The last train leaves in two minutes, but the station is a twenty-minute walk away. There is not ______ to walk there. (time)', ['enough time'], '時間不足；not 已在句中。'),
-    fill('The text is printed in tiny letters. It is ______ for me to read without my glasses. (small)', ['too small'], '字體過小而無法閱讀。'),
-    fill('The player recovered from her injury last week. She is now ______ to join the match. (fit)', ['fit enough'], '健康狀況足夠參賽。'),
-    fill('There are forty people in a room built for ten. There are ______ people for everyone to sit comfortably. (many)', ['too many'], 'people 可數，用 too many。'),
-    fill('The sauce tastes extremely salty because I added ______ salt. (much)', ['too much'], 'salt 不可數，用 too much。'),
-    fill('The car costs twice what I have saved. It is ______ for me to buy. (expensive)', ['too expensive'], '價格超出能力，用 too expensive。'),
-    fill('Your instructions are clear, and I understand every step. They are ______ for me to follow. (clear)', ['clear enough'], '清楚到足以依照步驟做。'),
-    fill('We need three eggs for the cake, but there is only one in the fridge. We do not have ______. (eggs)', ['enough eggs'], 'enough 放在複數名詞前。'),
-    fill('The driver was going at 100 km/h on a narrow road with a 30 km/h limit. He was driving ______ to stop safely at the bend. (fast)', ['too fast'], '速度過快；too 可修飾副詞。'),
-    fill('The translator spoke slowly, so everyone could write down the instructions. She spoke ______ for us to take notes. (slowly)', ['slowly enough'], 'enough 放在副詞後。'),
-    fill('It is midnight, and the shop closed at nine. It is ______ to buy milk there tonight. (late)', ['too late'], '時間太晚而無法購買。'),
-    fill('The parcel weighs twenty kilograms. It is ______ for one person to lift safely. (heavy)', ['too heavy'], '重量過重，搭配 for one person to lift。'),
-    fill('We need ten copies for the meeting and have printed twelve. There are ______ for everyone. (copies)', ['enough copies'], '份數足夠；enough 放在名詞前。'),
-    fill('The practice room is soundproof, so it is ______ to record a podcast. (quiet)', ['quiet enough'], '安靜到足以錄音。'),
-    fill('The fruit is still green and hard. It is not ______ to eat. (ripe)', ['ripe enough'], '未達成熟程度；not 已給出。'),
-    fill('The boy is only ten, and the competition is for adults. He is ______ to enter. (young)', ['too young'], '年齡太小而無法參加。'),
-    fill('We have saved the full ticket price. We have ______ to buy the tickets now. (money)', ['enough money'], '金額足夠；money 為名詞。'),
-    fill('The opening is only ten centimetres wide. It is ______ for the suitcase to fit through. (narrow)', ['too narrow'], '開口太窄而無法讓行李箱通過。'),
-    fill('The microphone is not working, and the people at the back cannot hear you. You are not speaking ______. (loudly)', ['loudly enough'], '音量不足；enough 放在副詞後。'),
-    fill('The instructions contain several advanced technical terms. They are ______ for beginners to understand. (complicated)', ['too complicated'], '複雜程度超出初學者能力。'),
-    fill('The paint is completely dry. It is now ______ for us to move the table without leaving marks. (dry)', ['dry enough'], '乾燥程度足夠。'),
-    fill('We have only one bottle of water for a day-long hike. That is not ______ for four people. (water)', ['enough water'], '水量不足；not 已給出。'),
-    fill('The hall seats two hundred, and we expect only eighty guests. It is ______ for the event. (big)', ['big enough'], '空間足夠容納活動。'),
-    fill('The ice is just a few millimetres thick. It is ______ for anyone to walk on safely. (thin)', ['too thin'], '冰太薄而不能安全踩上去。'),
-    fill('The computer has been tested with this software. It runs ______ to display the video smoothly. (quickly)', ['quickly enough'], '運作速度足以播放影片。'),
-    fill('The glue has not set yet. It is not ______ to hold the two pieces together. (strong)', ['strong enough'], '黏著力不足；enough 在形容詞後。')
+    {
+      "type": "input",
+      "s": "The tray has just come out of the oven. It is ______ to touch without oven gloves. (hot)",
+      "a": [
+        "too hot"
+      ],
+      "explanation": "too + 形容詞 + to：過熱而不能徒手碰。",
+      "scope": "too-adjective-to"
+    },
+    {
+      "type": "input",
+      "s": "I could not catch the last train because I reached the platform ______. (late)",
+      "a": [
+        "too late"
+      ],
+      "explanation": "too 放在副詞 late 前，表示到得太晚。",
+      "scope": "too-adverb"
+    },
+    {
+      "type": "input",
+      "s": "This helmet slides over my eyes even with the strap tightened. It is ______ for me. (big)",
+      "a": [
+        "too big"
+      ],
+      "explanation": "too + 形容詞 + for + 對象，表示對我而言過大。",
+      "scope": "too-for"
+    },
+    {
+      "type": "input",
+      "s": "The river current is ______ for beginners to swim across safely. The lifeguard has closed the swimming area. (strong)",
+      "a": [
+        "too strong"
+      ],
+      "explanation": "too + 形容詞 + for + 人 + to，程度過高而無法安全完成。",
+      "scope": "too-for-to"
+    },
+    {
+      "type": "input",
+      "s": "The tour guide spoke ______ for us to write down the address, so we had to ask her to repeat it. (quickly)",
+      "a": [
+        "too quickly"
+      ],
+      "explanation": "too 修飾副詞 quickly，表示快得來不及記下。",
+      "scope": "too-adverb-for-to"
+    },
+    {
+      "type": "input",
+      "s": "The puppy is only six weeks old. It is ______ to leave its mother. (young)",
+      "a": [
+        "too young"
+      ],
+      "explanation": "年齡太小而不能離開母親，用 too young to。",
+      "scope": "too-adjective-to"
+    },
+    {
+      "type": "input",
+      "s": "The gate is narrower than our moving van. It is ______ for the van to pass through. (narrow)",
+      "a": [
+        "too narrow"
+      ],
+      "explanation": "too narrow for + 物 + to，保留 pass through。",
+      "scope": "too-object-for-to"
+    },
+    {
+      "type": "input",
+      "s": "The bedtime story contains frightening scenes. It is ______ for small children. (scary)",
+      "a": [
+        "too scary"
+      ],
+      "explanation": "too + 形容詞 + for，不一定需要接 to。",
+      "scope": "too-for"
+    },
+    {
+      "type": "input",
+      "s": "The microphone made the announcement ______ for anyone to understand, so the staff turned the volume down. (loud)",
+      "a": [
+        "too loud"
+      ],
+      "explanation": "由音量過大而聽不清判斷用 too loud。",
+      "scope": "too-for-to"
+    },
+    {
+      "type": "input",
+      "s": "The handle is ______ for me to grip with one hand, so I have to use both hands. (thick)",
+      "a": [
+        "too thick"
+      ],
+      "explanation": "too thick for me to grip：太粗而不能單手握住。",
+      "scope": "too-for-to"
+    },
+    {
+      "type": "input",
+      "s": "The drummer played ______ for the dancers to keep up, so they asked him to slow down. (fast)",
+      "a": [
+        "too fast"
+      ],
+      "explanation": "too + 副詞 + for + 人 + to。",
+      "scope": "too-adverb-for-to"
+    },
+    {
+      "type": "input",
+      "s": "The pond has only a thin layer of ice. It is ______ to skate on safely. (thin)",
+      "a": [
+        "too thin"
+      ],
+      "explanation": "too thin to skate on；不可省略與 pond 搭配的 on。",
+      "scope": "too-preposition"
+    },
+    {
+      "type": "input",
+      "s": "The box contains far more books than one child can carry. There are ______ books in it for her to lift it safely. (many)",
+      "a": [
+        "too many"
+      ],
+      "explanation": "可數複數 books 用 too many。",
+      "scope": "too-many"
+    },
+    {
+      "type": "input",
+      "s": "The sauce is unpleasantly sweet because I added ______ honey. (much)",
+      "a": [
+        "too much"
+      ],
+      "explanation": "不可數 honey 用 too much。",
+      "scope": "too-much"
+    },
+    {
+      "type": "input",
+      "s": "The instructor demonstrated each step slowly. She moved ______ for everyone to copy her. (slowly)",
+      "a": [
+        "slowly enough"
+      ],
+      "explanation": "enough 放在副詞 slowly 後，表示慢得足以跟上。",
+      "scope": "enough-adverb"
+    },
+    {
+      "type": "input",
+      "s": "The climbing wall has easy handholds. It is ______ for beginners to use safely. (safe)",
+      "a": [
+        "safe enough"
+      ],
+      "explanation": "形容詞 + enough + for + 人 + to。",
+      "scope": "enough-for-to"
+    },
+    {
+      "type": "input",
+      "s": "The child can now reach both pedals without stretching. Her legs are ______ to ride this bicycle. (long)",
+      "a": [
+        "long enough"
+      ],
+      "explanation": "enough 放在形容詞 long 後。",
+      "scope": "enough-adjective-to"
+    },
+    {
+      "type": "input",
+      "s": "The blanket covers both of us comfortably. It is ______ for two people. (wide)",
+      "a": [
+        "wide enough"
+      ],
+      "explanation": "形容詞 + enough + for，表示足夠寬。",
+      "scope": "enough-for"
+    },
+    {
+      "type": "input",
+      "s": "We need eight clean jars for the jam, and we have ten. We have ______ to store it all. (jars)",
+      "a": [
+        "enough jars"
+      ],
+      "explanation": "enough 放在可數名詞 jars 前。",
+      "scope": "enough-count-noun"
+    },
+    {
+      "type": "input",
+      "s": "The printer needs five sheets for this form, and there are twenty in the tray. There is ______ to print it. (paper)",
+      "a": [
+        "enough paper"
+      ],
+      "explanation": "enough 放在不可數名詞 paper 前。",
+      "scope": "enough-mass-noun"
+    },
+    {
+      "type": "input",
+      "s": "The battery lasts six hours, and our journey takes two. It has ______ for the whole journey. (power)",
+      "a": [
+        "enough power"
+      ],
+      "explanation": "enough + 名詞 + for + 範圍或用途。",
+      "scope": "enough-noun-for"
+    },
+    {
+      "type": "input",
+      "s": "The hall has forty seats, and only thirty people are coming. There are ______ for everyone. (seats)",
+      "a": [
+        "enough seats"
+      ],
+      "explanation": "enough 在 seats 前；for everyone 表示供每個人使用。",
+      "scope": "enough-count-noun-for"
+    },
+    {
+      "type": "input",
+      "s": "The camera can capture clear pictures in this light. The room is ______ to take photographs without a flash. (bright)",
+      "a": [
+        "bright enough"
+      ],
+      "explanation": "bright enough to：亮度足夠拍照。",
+      "scope": "enough-adjective-to"
+    },
+    {
+      "type": "input",
+      "s": "The rescue boat reached the harbour before the storm. It travelled ______ to beat the bad weather. (quickly)",
+      "a": [
+        "quickly enough"
+      ],
+      "explanation": "enough 修飾副詞時放在副詞後。",
+      "scope": "enough-adverb"
+    },
+    {
+      "type": "input",
+      "s": "We only have ten minutes, but the walk takes half an hour. We do not have ______ to get there on foot. (time)",
+      "a": [
+        "enough time"
+      ],
+      "explanation": "否定已在 do not；空格填 enough time，不再加 not。",
+      "scope": "not-enough-noun"
+    },
+    {
+      "type": "input",
+      "s": "The ladder stops a metre below the window. It is not ______ to reach it. (tall)",
+      "a": [
+        "tall enough"
+      ],
+      "explanation": "not + 形容詞 + enough + to 表示程度不足。",
+      "scope": "not-adjective-enough"
+    },
+    {
+      "type": "input",
+      "s": "Only the first row heard the speaker. He did not speak ______ for the people at the back to hear him. (loudly)",
+      "a": [
+        "loudly enough"
+      ],
+      "explanation": "not + 副詞 + enough；loudly 放在 enough 前。",
+      "scope": "not-adverb-enough"
+    },
+    {
+      "type": "input",
+      "s": "The ticket costs twenty dollars, but I only have twelve. I have not got ______ to buy it. (money)",
+      "a": [
+        "enough money"
+      ],
+      "explanation": "have not got 已是否定，填 enough money。",
+      "scope": "not-enough-mass-noun"
+    },
+    {
+      "type": "input",
+      "s": "We need six players for a team, but only four have arrived. There are not ______ to start the match. (players)",
+      "a": [
+        "enough players"
+      ],
+      "explanation": "not enough + 複數名詞，表示人數不足。",
+      "scope": "not-enough-count-noun"
+    },
+    {
+      "type": "input",
+      "s": "The handle still feels sticky after painting. It is not ______ for us to touch yet. (dry)",
+      "a": [
+        "dry enough"
+      ],
+      "explanation": "not dry enough for us to touch：還不夠乾。",
+      "scope": "not-enough-for-to"
+    },
+    {
+      "type": "input",
+      "s": "There is only one small sandwich for three hungry hikers. There is not ______ for all of them. (food)",
+      "a": [
+        "enough food"
+      ],
+      "explanation": "not enough + 不可數名詞 + for。",
+      "scope": "not-enough-noun-for"
+    },
+    {
+      "type": "input",
+      "s": "The pianist missed the required mark for the advanced class. She did not play ______ to qualify. (well)",
+      "a": [
+        "well enough"
+      ],
+      "explanation": "enough 放在不規則副詞 well 後。",
+      "scope": "not-adverb-enough"
+    },
+    {
+      "type": "input",
+      "s": "The path is clear and level, so it is ______ for a wheelchair. (smooth)",
+      "a": [
+        "smooth enough"
+      ],
+      "explanation": "smooth enough for + 物，表示路面足夠平順。",
+      "scope": "enough-object-for"
+    },
+    {
+      "type": "input",
+      "s": "The zip will not close because I have packed ______ clothes into this suitcase. (many)",
+      "a": [
+        "too many"
+      ],
+      "explanation": "clothes 是複數名詞，數量過多用 too many。",
+      "scope": "too-many"
+    },
+    {
+      "type": "input",
+      "s": "The plant roots are rotting because the pot contains ______ water. (much)",
+      "a": [
+        "too much"
+      ],
+      "explanation": "water 不可數，過量用 too much。",
+      "scope": "too-much"
+    },
+    {
+      "type": "input",
+      "s": "The instructions use short words and clear pictures. They are ______ for a child to follow alone. (simple)",
+      "a": [
+        "simple enough"
+      ],
+      "explanation": "simple enough for a child to follow：簡單到孩子能自行照做。",
+      "scope": "enough-for-to"
+    }
   ],
   combine: [
-    combine('The tea is very hot.', 'I cannot drink it yet.', 'too', 'The tea is too hot for me to drink yet.', ['The tea is too hot for me to drink.']),
-    combine('The suitcase is very heavy.', 'The child cannot lift it.', 'too', 'The suitcase is too heavy for the child to lift.'),
-    combine('The ceiling is very low.', 'The tall visitor cannot stand upright in the room.', 'too', 'The ceiling is too low for the tall visitor to stand upright in the room.'),
-    combine('The music is very loud.', 'We cannot hear each other.', 'too', 'The music is too loud for us to hear each other.'),
-    combine('The path is very slippery.', 'The walkers cannot use it safely.', 'too', 'The path is too slippery for the walkers to use safely.'),
-    combine('The article is very technical.', 'Young readers cannot understand it.', 'too', 'The article is too technical for young readers to understand.'),
-    combine('The water is very cold.', 'The children cannot swim in it.', 'too', 'The water is too cold for the children to swim in.'),
-    combine('The ladder is very short.', 'We cannot reach the roof with it.', 'too', 'The ladder is too short for us to reach the roof with.'),
-    combine('The runner was very tired.', 'She could not continue the race.', 'too', 'The runner was too tired to continue the race.', ['The runner was too tired for her to continue the race.']),
-    combine('The explanation was given very quickly.', 'The new students could not follow it.', 'too', 'The explanation was given too quickly for the new students to follow.'),
-    combine('The room is very crowded.', 'We cannot move around comfortably.', 'too', 'The room is too crowded for us to move around comfortably.'),
-    combine('The shoes are very tight.', 'I cannot wear them all day.', 'too', 'The shoes are too tight for me to wear all day.'),
-    combine('The river was very deep.', 'The hikers could not walk across it.', 'too', 'The river was too deep for the hikers to walk across.'),
-    combine('The painting is very expensive.', 'The small museum cannot buy it.', 'too', 'The painting is too expensive for the small museum to buy.'),
-    combine('The wind was very strong.', 'We could not put up the tent.', 'too', 'The wind was too strong for us to put up the tent.'),
-    combine('The instructions were very vague.', 'The volunteers could not follow them.', 'too', 'The instructions were too vague for the volunteers to follow.'),
-    combine('The doorway is sufficiently wide.', 'The wheelchair can pass through it.', 'enough', 'The doorway is wide enough for the wheelchair to pass through.'),
-    combine('The light is sufficiently bright.', 'We can read the map.', 'enough', 'The light is bright enough for us to read the map.'),
-    combine('The rope is sufficiently long.', 'The rescuers can reach the ledge with it.', 'enough', 'The rope is long enough for the rescuers to reach the ledge with.'),
-    combine('The boy is sufficiently tall.', 'He can reach the top shelf.', 'enough', 'The boy is tall enough to reach the top shelf.', ['The boy is tall enough for him to reach the top shelf.']),
-    combine('The team practised sufficiently hard.', 'They could qualify for the final.', 'enough', 'The team practised hard enough to qualify for the final.', ['The team practised hard enough for them to qualify for the final.']),
-    combine('The speaker spoke sufficiently clearly.', 'Everyone could understand the announcement.', 'enough', 'The speaker spoke clearly enough for everyone to understand the announcement.'),
-    combine('We have a sufficient amount of flour.', 'We can make two loaves of bread.', 'enough', 'We have enough flour to make two loaves of bread.', ['We have enough flour for us to make two loaves of bread.']),
-    combine('There are a sufficient number of chairs.', 'All the guests can sit down.', 'enough', 'There are enough chairs for all the guests to sit down.'),
-    combine('She has saved a sufficient amount of money.', 'She can pay for the course.', 'enough', 'She has saved enough money to pay for the course.', ['She has saved enough money for her to pay for the course.']),
-    combine('The room is sufficiently quiet.', 'The baby can sleep in it.', 'enough', 'The room is quiet enough for the baby to sleep in.'),
-    combine('The shelf is not sufficiently strong.', 'It cannot support these books.', 'enough', 'The shelf is not strong enough to support these books.'),
-    combine('The sea is not sufficiently calm.', 'The small boat cannot leave the harbour.', 'enough', 'The sea is not calm enough for the small boat to leave the harbour.'),
-    combine('We do not have a sufficient amount of time.', 'We cannot visit both museums.', 'enough', 'We do not have enough time to visit both museums.', ['We do not have enough time for us to visit both museums.']),
-    combine('The child is not sufficiently old.', 'She cannot travel alone.', 'enough', 'The child is not old enough to travel alone.', ['The child is not old enough for her to travel alone.']),
-    combine('The guide did not speak sufficiently loudly.', 'The people at the back could not hear him.', 'enough', 'The guide did not speak loudly enough for the people at the back to hear him.'),
-    combine('There are not a sufficient number of volunteers.', 'We cannot run all three stalls.', 'enough', 'There are not enough volunteers for us to run all three stalls.')
+    {
+      "type": "sentence",
+      "sentences": [
+        "The toddler is very short.",
+        "She cannot see over the garden wall."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "The toddler is too short to see over the garden wall."
+        ]
+      ],
+      "scope": "too-adjective-to",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The parcel is very bulky.",
+        "I cannot put it in my school bag."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "The parcel is too bulky for me to put in my school bag."
+        ]
+      ],
+      "scope": "too-for-to",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The ground is very muddy.",
+        "We cannot pitch our tent on it."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "The ground is too muddy for us to pitch our tent on."
+        ]
+      ],
+      "scope": "too-preposition",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The drummer played very loudly.",
+        "The singer could not hear the piano."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "The drummer played too loudly for the singer to hear the piano."
+        ]
+      ],
+      "scope": "too-adverb-for-to",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The cyclist was moving very fast.",
+        "He could not stop before the puddle."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "The cyclist was moving too fast to stop before the puddle."
+        ]
+      ],
+      "scope": "too-adverb-to",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The kitten is very weak.",
+        "It cannot climb out of the box."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "The kitten is too weak to climb out of the box."
+        ]
+      ],
+      "scope": "too-adjective-to",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The water in the pool is very cold.",
+        "The children cannot swim in it."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "The water in the pool is too cold for the children to swim in."
+        ]
+      ],
+      "scope": "too-preposition",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The opening is very small.",
+        "The delivery robot cannot pass through it."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "The opening is too small for the delivery robot to pass through."
+        ]
+      ],
+      "scope": "too-object-for-to",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The instructions were read very quickly.",
+        "We could not write them down."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "The instructions were read too quickly for us to write down."
+        ]
+      ],
+      "scope": "too-passive-adverb",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The doorbell rang very softly.",
+        "My grandfather could not hear it."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "The doorbell rang too softly for my grandfather to hear."
+        ]
+      ],
+      "scope": "too-adverb-for-to",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The curry is very spicy.",
+        "My little brother cannot eat it."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "The curry is too spicy for my little brother to eat."
+        ]
+      ],
+      "scope": "too-for-to",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The suitcase is very wide.",
+        "It cannot fit in the overhead locker."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "The suitcase is too wide to fit in the overhead locker."
+        ]
+      ],
+      "scope": "too-adjective-to",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The lecture ended very late.",
+        "We could not catch the last ferry."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "The lecture ended too late for us to catch the last ferry."
+        ]
+      ],
+      "scope": "too-adverb-for-to",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The screen is very dim.",
+        "The class cannot read the labels on it."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "The screen is too dim for the class to read the labels on."
+        ]
+      ],
+      "scope": "too-preposition",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "There are a great many parcels.",
+        "The courier cannot deliver them all today."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "There are too many parcels for the courier to deliver today.",
+          "There are too many parcels for the courier to deliver all today."
+        ]
+      ],
+      "scope": "too-many",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "There is a great deal of smoke in the room.",
+        "We cannot see the exit clearly."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "There is too much smoke in the room for us to see the exit clearly."
+        ]
+      ],
+      "scope": "too-much",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The bench is very narrow.",
+        "It is unsuitable for three adults."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "The bench is too narrow for three adults."
+        ]
+      ],
+      "scope": "too-for",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The rucksack is very heavy.",
+        "It is unsuitable for a small child."
+      ],
+      "keyword": "too",
+      "a": [
+        [
+          "The rucksack is too heavy for a small child."
+        ]
+      ],
+      "scope": "too-for",
+      "explanation": "too 放在形容詞／副詞前，表示程度過高而無法完成；對象不同時加入 for + 對象，to 後用原形動詞。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The new volunteer is sufficiently confident.",
+        "She can lead the warm-up activity."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "The new volunteer is confident enough to lead the warm-up activity."
+        ]
+      ],
+      "scope": "enough-adjective-to",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The soup is sufficiently cool.",
+        "The children can taste it now."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "The soup is cool enough for the children to taste now."
+        ]
+      ],
+      "scope": "enough-for-to",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The window opens sufficiently wide.",
+        "The cat can climb through it."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "The window opens wide enough for the cat to climb through."
+        ]
+      ],
+      "scope": "enough-adverb-for-to",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The announcer spoke sufficiently clearly.",
+        "Everyone could understand the change of platform."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "The announcer spoke clearly enough for everyone to understand the change of platform."
+        ]
+      ],
+      "scope": "enough-adverb-for-to",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The athlete ran sufficiently quickly.",
+        "She qualified for the final."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "The athlete ran quickly enough to qualify for the final."
+        ]
+      ],
+      "scope": "enough-adverb-to",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "We have a sufficient number of blankets.",
+        "We can give one to every camper."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "We have enough blankets to give one to every camper."
+        ]
+      ],
+      "scope": "enough-count-noun",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The team has a sufficient amount of wood.",
+        "It can build a small shelter."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "The team has enough wood to build a small shelter."
+        ]
+      ],
+      "scope": "enough-mass-noun",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "There is a sufficient amount of space in the garage.",
+        "We can store the bicycles there."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "There is enough space in the garage for us to store the bicycles.",
+          "There is enough space in the garage for us to store the bicycles there."
+        ]
+      ],
+      "scope": "enough-noun-for-to",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The tunnel is sufficiently high.",
+        "The maintenance truck can drive through it."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "The tunnel is high enough for the maintenance truck to drive through."
+        ]
+      ],
+      "scope": "enough-object-for-to",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The picnic table is sufficiently long.",
+        "It can seat our whole family."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "The picnic table is long enough to seat our whole family."
+        ]
+      ],
+      "scope": "enough-adjective-to",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The water is not sufficiently clean.",
+        "We cannot drink it safely."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "The water is not clean enough for us to drink safely."
+        ]
+      ],
+      "scope": "not-enough-for-to",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The rope is not sufficiently long.",
+        "It cannot reach the bottom of the well."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "The rope is not long enough to reach the bottom of the well."
+        ]
+      ],
+      "scope": "not-enough-adjective-to",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The actor did not speak sufficiently loudly.",
+        "The audience could not hear him."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "The actor did not speak loudly enough for the audience to hear him."
+        ]
+      ],
+      "scope": "not-enough-adverb-for-to",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "We do not have a sufficient number of paintbrushes.",
+        "We cannot give one to every child."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "We do not have enough paintbrushes to give one to every child."
+        ]
+      ],
+      "scope": "not-enough-count-noun",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The campers do not have a sufficient amount of fuel.",
+        "They cannot cook another meal."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "The campers do not have enough fuel to cook another meal."
+        ]
+      ],
+      "scope": "not-enough-mass-noun",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "There is not a sufficient amount of room on the shelf.",
+        "We cannot put the large globe there."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "There is not enough room on the shelf for us to put the large globe there.",
+          "There is not enough room on the shelf for us to put the large globe."
+        ]
+      ],
+      "scope": "not-enough-noun-for-to",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "The doorway is sufficiently wide.",
+        "It is suitable for a wheelchair."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "The doorway is wide enough for a wheelchair."
+        ]
+      ],
+      "scope": "enough-for",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    },
+    {
+      "type": "sentence",
+      "sentences": [
+        "There is a sufficient amount of rice.",
+        "It will feed all six guests."
+      ],
+      "keyword": "enough",
+      "a": [
+        [
+          "There is enough rice to feed all six guests."
+        ]
+      ],
+      "scope": "enough-mass-noun",
+      "explanation": "enough 放在形容詞／副詞後、名詞前；保留原句的肯定或否定，以及必要的 for + 對象。"
+    }
   ],
   present: [
     fill('The bakery opens at seven every morning. Its owner ______ (unlock) the front door before the first customers arrive.', ['unlocks'], '描述每日固定的工作。'),
