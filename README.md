@@ -52,21 +52,24 @@ complex human traits as universally simple single-gene inheritance.
 ## Semester Practice
 
 The semester selector defaults to **這學期（期中考）**. The new bank in
-`midterm-bank.js` contains 220 individually written questions based on the
+`midterm-bank.js` contains 148 individually written questions based on the
 supplied Week 1–7 scope:
 
 - Week 1–2: 48 question-tag fill-in questions, covering the supplied negative words and special tag rules.
-- Week 3: 36 contextual phrasal-verb multiple-choice questions with four similar phrase options, covering all 13 listed verbs and their meanings.
-- Week 4–5: 36 too/enough fill-in questions and 36 full-sentence combinations, covering adjective/adverb/noun placement, for + person/thing, to-infinitives and negative enough patterns.
-- Week 6–7: 64 mixed questions including verb forms, stative/action meanings,
+- Week 3: 24 contextual phrasal-verb multiple-choice questions with four similar phrase options, covering all 13 listed verbs and their meanings.
+- Week 4–5: 24 too/enough fill-in questions and 12 short full-sentence combinations, covering adjective/adverb/noun placement, for + person/thing, to-infinitives and negative enough patterns.
+- Week 6–7: 40 mixed questions including verb forms, stative/action meanings,
   arrangements, timetables, and frequency-adverb placement.
 
-The current-semester combined practice mixes all 220 questions. The
+The current-semester combined practice mixes all 148 questions. The
 previous-semester selector retains the original 5,000-question JSON bank and its
 practice groups. Per-question headings show the question number and exercise
 format without revealing the tense.
 
-Sentence combinations require the specified keyword and the original subject.
+All current-semester questions use shorter contexts and simpler everyday vocabulary.
+Sentence combinations use two short sentences, with six too and six enough items;
+most keep the same person or thing as the subject. They require the specified
+keyword and the original subject.
 `answer-utils.js` compares explicit accepted answers, allowing capitalization,
 spacing, punctuation, and contractions. It does not award points for fragments
 or for sentences that reverse the intended meaning. Explanations appear after
